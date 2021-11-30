@@ -155,6 +155,7 @@ string benchmarkLog(string algorithm, int n) {
 		time_t start_time;
 		time_t end_time;
 		time(&start_time);
+		time(&end_time);
 		
 		cout << "BEGINNING KEY GENERATION..." << endl;
 		// for(int i = 0; i < NUMLOOPS; i++) {
