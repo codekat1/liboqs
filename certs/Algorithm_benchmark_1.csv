@@ -1,3 +1,6 @@
 Name,Public Key Length (bytes),Private Key Length (bytes),Signature Length (bytes),Public+Signature (bytes),Number of samples,Sample input message,Initialization milliseconds,Key generation milliseconds,Signing milliseconds,Verifying milliseconds,
-"Dilithium2",1312,2528,2420,3732,1,"Hello, World!",0.041000,0.097000,0.310000,0.026000,
-"Dilithium3",1952,4000,3293,5245,1,"Hello, World!",0.002000,0.116000,0.159000,0.062000,
+"Dilithium2",1312,2528,2420,3732,1,"Hello, World!",0.024000,0.309000,0.235000,0.021000,
+"Dilithium3",1952,4000,3293,5245,1,"Hello, World!",0.005000,0.204000,0.356000,0.080000,
+"Dilithium5",2592,4864,4595,7187,1,"Hello, World!",0.002000,0.246000,0.293000,0.094000,
+"Falcon-512",897,1281,690,1587,1,"Hello, World!",0.008000,10.575000,0.755000,0.001000,
+"Falcon-1024",1793,2305,1330,3123,1,"Hello, World!",0.002000,31.848000,1.037000,0.001000,

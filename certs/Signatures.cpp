@@ -8,7 +8,7 @@
 #include <oqs/oqs.h>
 using namespace std;
 
-#define NUMLOOPS 200000
+#define NUMLOOPS 1
 
 /*
 	algorithm: What algorithm the instance of the class is using
@@ -55,6 +55,10 @@ public:
 		private_key = (unsigned char*) malloc(private_key_length);
 	}
 
+	~SignatureManager(){
+		free(public_key);
+		free(private_key);
+	}
 	// Generate a public and private key pair
 	void generate_keypair() {
 		OQS_STATUS status = OQS_SIG_keypair(sig, public_key, private_key);
@@ -159,6 +163,8 @@ string benchmarkLog(string algorithm, int n) {
 			t3a = clock();
 				signature = sigmanager.sign(message);
 			t3b = clock();
+			free(signature);
+
 		}
 
 		cout << "BEGINNING VERIFYING..." << endl;
@@ -172,6 +178,7 @@ string benchmarkLog(string algorithm, int n) {
 		clocks_keypair_generation += (t2b - t2a);
 		clocks_signing += (t3b - t3a);
 		clocks_verifying += (t4b - t4a);
+		
 	}
 
 	clocks_initialization /= (double)n;
