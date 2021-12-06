@@ -8,7 +8,7 @@
 #include <oqs/oqs.h>
 using namespace std;
 
-#define NUMLOOPS 1000000
+//#define NUMLOOPS 1000000
 #define LOOP_TIME 10
 
 /*
@@ -253,8 +253,9 @@ int main(int argc, char** argv) {
 	// };
 	const char *availAlgs[] = {
 		//"Dilithium2", "Dilithium3", 
-		"Dilithium5"
-		//, "Falcon-512", "Falcon-1024"
+		//"Dilithium5"
+		//, "Falcon-512", 
+		"Falcon-1024"
 	};
 	const int numberOfAlgorithms = sizeof(availAlgs) / sizeof(availAlgs[0]);
     
