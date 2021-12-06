@@ -9,7 +9,7 @@
 using namespace std;
 
 //#define NUMLOOPS 1000000
-#define LOOP_TIME 10
+#define LOOP_TIME 5
 
 /*
 	algorithm: What algorithm the instance of the class is using
@@ -35,7 +35,7 @@ private:
 public:
 	string algorithm;
 	unsigned int public_key_length, private_key_length, signature_length;
-	unsigned char *public_key, *private_key;
+	unsigned char *public_key, *private_key, *signature = NULL;
 
 	SignatureManager(string _algorithm) {
 		algorithm = _algorithm;
@@ -60,6 +60,7 @@ public:
 		free(public_key);
 		free(private_key);
 	}
+
 	// Generate a public and private key pair
 	void generate_keypair() {
 		OQS_STATUS status = OQS_SIG_keypair(sig, public_key, private_key);
@@ -78,7 +79,7 @@ public:
 
 	// Sign a message, returns its signature
 	unsigned char* sign(string message) {
-		unsigned char *signature = (unsigned char*) malloc(signature_length);
+		signature = (unsigned char*) malloc(signature_length);
 		unsigned int message_length = message.length();
 		size_t *signature_len = (size_t*) &signature_length;
 		uint8_t *message_bytes = reinterpret_cast<uint8_t*>(&message[0]);
@@ -176,6 +177,8 @@ string benchmarkLog(string algorithm, int n) {
 				signature = sigmanager.sign(message);
 			t3b = clock();
 			free(signature);
+			//if(*signature != '\0') free(signature);
+			//*signature = '\0';
 			time(&end_time);
 		}
 
@@ -243,7 +246,7 @@ int main(int argc, char** argv) {
 
 	outputFile << benchmarkLogHeader() << endl;
 	
-	cout << "Listing available algorithms:"<<"\n";
+	//cout << "Listing available algorithms:"<<"\n";
 
 	// A list of all available algorithms
 	//const char *availAlgs[63]={"DILITHIUM_2","DILITHIUM_3","DILITHIUM_4","Falcon-512","Falcon-1024","MQDSS-31-48","MQDSS-31-64","Rainbow-Ia-Classic","Rainbow-Ia-Cyclic","Rainbow-Ia-Cyclic-Compressed","Rainbow-IIIc-Classic","Rainbow-IIIc-Cyclic","Rainbow-IIIc-Cyclic-Compressed","Rainbow-Vc-Classic","Rainbow-Vc-Cyclic","Rainbow-Vc-Cyclic-Compressed","SPHINCS+-Haraka-128f-robust","SPHINCS+-Haraka-128f-simple","SPHINCS+-Haraka-128s-robust","SPHINCS+-Haraka-128s-simple","SPHINCS+-Haraka-192f-robust","SPHINCS+-Haraka-192f-simple","SPHINCS+-Haraka-192s-robust","SPHINCS+-Haraka-192s-simple","SPHINCS+-Haraka-256f-robust","SPHINCS+-Haraka-256f-simple","SPHINCS+-Haraka-256s-robust","SPHINCS+-Haraka-256s-simple","SPHINCS+-SHA256-128f-robust","SPHINCS+-SHA256-128f-simple","SPHINCS+-SHA256-128s-robust","SPHINCS+-SHA256-128s-simple","SPHINCS+-SHA256-192f-robust","SPHINCS+-SHA256-192f-simple","SPHINCS+-SHA256-192s-robust","SPHINCS+-SHA256-192s-simple","SPHINCS+-SHA256-256f-robust","SPHINCS+-SHA256-256f-simple","SPHINCS+-SHA256-256s-robust","SPHINCS+-SHA256-256s-simple","SPHINCS+-SHAKE256-128f-robust","SPHINCS+-SHAKE256-128f-simple","SPHINCS+-SHAKE256-128s-robust","SPHINCS+-SHAKE256-128s-simple","SPHINCS+-SHAKE256-192f-robust","SPHINCS+-SHAKE256-192f-simple","SPHINCS+-SHAKE256-192s-robust","SPHINCS+-SHAKE256-192s-simple","SPHINCS+-SHAKE256-256f-robust","SPHINCS+-SHAKE256-256f-simple","SPHINCS+-SHAKE256-256s-robust","SPHINCS+-SHAKE256-256s-simple","picnic_L1_FS","picnic_L1_UR","picnic_L3_FS","picnic_L3_UR","picnic_L5_FS","picnic_L5_UR","picnic2_L1_FS","picnic2_L3_FS","picnic2_L5_FS","qTesla-p-I","qTesla-p-III"};
