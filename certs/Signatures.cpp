@@ -9,7 +9,7 @@
 using namespace std;
 
 //#define NUMLOOPS 1000000
-#define LOOP_TIME 5
+#define LOOP_TIME 10
 
 /*
 	algorithm: What algorithm the instance of the class is using
@@ -52,8 +52,13 @@ public:
 		private_key_length = sig->length_secret_key;
 		signature_length = sig->length_signature;
 
+
 		public_key = (unsigned char*) malloc(public_key_length);
+		*public_key = 0;
 		private_key = (unsigned char*) malloc(private_key_length);
+		*private_key = 0;
+		signature = (unsigned char*) malloc(signature_length);
+		*signature = 0;
 	}
 
 	~SignatureManager(){
@@ -79,12 +84,14 @@ public:
 
 	// Sign a message, returns its signature
 	unsigned char* sign(string message) {
-		signature = (unsigned char*) malloc(signature_length);
+		//size_t *signature_len = (size_t*) &signature_length;
 		unsigned int message_length = message.length();
-		size_t *signature_len = (size_t*) &signature_length;
-		uint8_t *message_bytes = reinterpret_cast<uint8_t*>(&message[0]);
+		unsigned char message_bytes[message_length];
+		strcpy( (char*) message_bytes, message.c_str());
+		//uint8_t *message_bytes = reinterpret_cast<uint8_t*>(&message[0]);
 
-		OQS_STATUS status = OQS_SIG_sign(sig, signature, signature_len, message_bytes, message_length, private_key);
+		size_t temp_siglen = (size_t) signature_length;
+		OQS_STATUS status = OQS_SIG_sign(sig, signature, &temp_siglen, message_bytes, message_length, private_key);
 
 		if (status != OQS_SUCCESS) throw runtime_error("ERROR: OQS_SIG_sign failed\n");
 
@@ -166,7 +173,6 @@ string benchmarkLog(string algorithm, int n) {
 			t2b = clock();
 			time(&end_time);
 		}
-
 		// }
 		
 		time(&start_time);
@@ -176,15 +182,16 @@ string benchmarkLog(string algorithm, int n) {
 			t3a = clock();
 				signature = sigmanager.sign(message);
 			t3b = clock();
-			free(signature);
-			//if(*signature != '\0') free(signature);
-			//*signature = '\0';
+			//free(signature);
+			//signature = NULL;
+			// if(*signature != '\0') free(signature);
+			// *signature = '\0';
 			time(&end_time);
 		}
 
 		time(&start_time);
 		cout << "BEGINNING VERIFYING..." << endl;
-		//for(int i = 0; i < NUMLOOPS; i++) {
+		// for(int i = 0; i < NUMLOOPS; i++) {
 		while((end_time - start_time) < LOOP_TIME){
 			t4a = clock();
 				result = sigmanager.verify(message, signature);
@@ -255,9 +262,10 @@ int main(int argc, char** argv) {
 	// 	"picnic_L1_FS", "picnic_L1_UR", "picnic_L1_full", "picnic_L3_FS", "picnic_L3_UR", "picnic_L3_full", "picnic_L5_FS", "picnic_L5_UR", "picnic_L5_full", "picnic3_L1", "picnic3_L3", "picnic3_L5", "qTesla-p-I", "qTesla-p-III", "DILITHIUM_2", "DILITHIUM_3", "DILITHIUM_4", "Falcon-512", "Falcon-1024", "MQDSS-31-48", "MQDSS-31-64", "Rainbow-Ia-Classic", "Rainbow-Ia-Cyclic", "Rainbow-Ia-Cyclic-Compressed", "Rainbow-IIIc-Classic", "Rainbow-IIIc-Cyclic", "Rainbow-IIIc-Cyclic-Compressed", "Rainbow-Vc-Classic", "Rainbow-Vc-Cyclic", "Rainbow-Vc-Cyclic-Compressed", "SPHINCS+-Haraka-128f-robust", "SPHINCS+-Haraka-128f-simple", "SPHINCS+-Haraka-128s-robust", "SPHINCS+-Haraka-128s-simple", "SPHINCS+-Haraka-192f-robust", "SPHINCS+-Haraka-192f-simple", "SPHINCS+-Haraka-192s-robust", "SPHINCS+-Haraka-192s-simple", "SPHINCS+-Haraka-256f-robust", "SPHINCS+-Haraka-256f-simple", "SPHINCS+-Haraka-256s-robust", "SPHINCS+-Haraka-256s-simple", "SPHINCS+-SHA256-128f-robust", "SPHINCS+-SHA256-128f-simple", "SPHINCS+-SHA256-128s-robust", "SPHINCS+-SHA256-128s-simple", "SPHINCS+-SHA256-192f-robust", "SPHINCS+-SHA256-192f-simple", "SPHINCS+-SHA256-192s-robust", "SPHINCS+-SHA256-192s-simple", "SPHINCS+-SHA256-256f-robust", "SPHINCS+-SHA256-256f-simple", "SPHINCS+-SHA256-256s-robust", "SPHINCS+-SHA256-256s-simple", "SPHINCS+-SHAKE256-128f-robust", "SPHINCS+-SHAKE256-128f-simple", "SPHINCS+-SHAKE256-128s-robust", "SPHINCS+-SHAKE256-128s-simple", "SPHINCS+-SHAKE256-192f-robust", "SPHINCS+-SHAKE256-192f-simple", "SPHINCS+-SHAKE256-192s-robust", "SPHINCS+-SHAKE256-192s-simple", "SPHINCS+-SHAKE256-256f-robust", "SPHINCS+-SHAKE256-256f-simple", "SPHINCS+-SHAKE256-256s-robust", "SPHINCS+-SHAKE256-256s-simple"
 	// };
 	const char *availAlgs[] = {
-		//"Dilithium2", "Dilithium3", 
-		//"Dilithium5"
-		//, "Falcon-512", 
+		//"Dilithium2",
+		//"Dilithium3", 
+		//"Dilithium5",
+		//"Falcon-512",
 		"Falcon-1024"
 	};
 	const int numberOfAlgorithms = sizeof(availAlgs) / sizeof(availAlgs[0]);
@@ -268,8 +276,9 @@ int main(int argc, char** argv) {
 			cout << "Progress: " << (100 * (i + 1) / float(numberOfAlgorithms)) << "%" << endl;
 			string row = benchmarkLog(algorithm, numSamples);
 			outputFile << row << endl;
-		} catch(...) {
+		} catch(const std::exception& e) {
 			cout << "!!!!!!!!!!!!!!!!!!!! ERROR " << algorithm << " does not work." << endl;
+        	cout << "Caught exception \"" << e.what() << "\"\n";
 		}
     }
 

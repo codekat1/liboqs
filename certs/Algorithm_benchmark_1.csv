@@ -1,1 +1,0 @@
-Name,Public Key Length (bytes),Private Key Length (bytes),Signature Length (bytes),Public+Signature (bytes),Number of samples,Sample input message,Initialization milliseconds,Key generation milliseconds,Signing milliseconds,Verifying milliseconds,
