@@ -1,12 +1,16 @@
 #include <chrono>
 #include <cstdio>
+#include <cstring>
 #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <oqs/oqs.h>
+#include <stdio.h>
 #include <string>
 #include <thread>
 #include <vector>
+
+using namespace std;
 
 
 
@@ -32,16 +36,16 @@ private:
 	OQS_SIG *sig;
 
 public:
-	std::string algorithm;
+	string algorithm;
 	unsigned int public_key_length, private_key_length, signature_length;
-	unsigned char *public_key, *private_key;
+	unsigned char *public_key, *private_key, *signature = NULL;
 
-	SignatureManager(std::string _algorithm) {
+	SignatureManager(string _algorithm) {
 		algorithm = _algorithm;
 		algorithm_char = const_cast<char*>(algorithm.c_str());
 		
 		if(OQS_SIG_alg_is_enabled(algorithm_char) == 0) {
-			throw std::runtime_error("ERROR: Algorithm \"" + algorithm + "\" does not exist");
+			throw runtime_error("ERROR: Algorithm \"" + algorithm + "\" does not exist");
 		}
 
 		OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
@@ -51,42 +55,55 @@ public:
 		private_key_length = sig->length_secret_key;
 		signature_length = sig->length_signature;
 
+
 		public_key = (unsigned char*) malloc(public_key_length);
+		*public_key = 0;
 		private_key = (unsigned char*) malloc(private_key_length);
+		*private_key = 0;
+		signature = (unsigned char*) malloc(signature_length);
+		*signature = 0;
+	}
+
+	~SignatureManager(){
+		free(public_key);
+		free(private_key);
+		free(signature);
 	}
 
 	// Generate a public and private key pair
 	void generate_keypair() {
 		OQS_STATUS status = OQS_SIG_keypair(sig, public_key, private_key);
-		if(status != OQS_SUCCESS) throw std::runtime_error("ERROR: OQS_SIG_keypair failed\n");
+		if(status != OQS_SUCCESS) throw runtime_error("ERROR: OQS_SIG_keypair failed\n");
 	}
 
 	// Get the generated public key
-	std::string get_public_key() {
+	string get_public_key() {
 		return bytes_to_hex(public_key, public_key_length);
 	}
 
 	// Get the generated private key
-	std::string get_private_key() {
+	string get_private_key() {
 		return bytes_to_hex(private_key, private_key_length);
 	}
 
 	// Sign a message, returns its signature
-	unsigned char* sign(std::string message) {
-		unsigned char *signature = (unsigned char*) malloc(signature_length);
+	unsigned char* sign(string message) {
+		//size_t *signature_len = (size_t*) &signature_length;
 		unsigned int message_length = message.length();
-		size_t *signature_len = (size_t*) &signature_length;
-		uint8_t *message_bytes = reinterpret_cast<uint8_t*>(&message[0]);
+		unsigned char message_bytes[message_length];
+		strcpy( (char*) message_bytes, message.c_str());
+		//uint8_t *message_bytes = reinterpret_cast<uint8_t*>(&message[0]);
 
-		OQS_STATUS status = OQS_SIG_sign(sig, signature, signature_len, message_bytes, message_length, private_key);
+		size_t temp_siglen = (size_t) signature_length;
+		OQS_STATUS status = OQS_SIG_sign(sig, signature, &temp_siglen, message_bytes, message_length, private_key);
 
-		if (status != OQS_SUCCESS) throw std::runtime_error("ERROR: OQS_SIG_sign failed\n");
+		if (status != OQS_SUCCESS) throw runtime_error("ERROR: OQS_SIG_sign failed\n");
 
 		return signature;
 	}
 
 	// Verify a signature
-	bool verify(std::string message, unsigned char* signature) {
+	bool verify(string message, unsigned char* signature) {
 		unsigned int message_length = message.length();
 		//size_t *signature_len = (size_t*) &signature_length;
 		uint8_t *message_bytes = reinterpret_cast<uint8_t*>(&message[0]);
@@ -97,9 +114,9 @@ public:
 	}
 
 	// Given an array of bytes, convert it to a hexadecimal string
-	static std::string bytes_to_hex(unsigned char* bytes, int len) {
+	static string bytes_to_hex(unsigned char* bytes, int len) {
 		constexpr char hexmap[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-		std::string output(len * 2, ' ');
+		string output(len * 2, ' ');
 		for (int i = 0; i < len; ++i) {
 			output[2 * i] = hexmap[(bytes[i] & 0xF0) >> 4];
 			output[2 * i + 1] = hexmap[bytes[i] & 0x0F];
@@ -195,7 +212,7 @@ std::string benchmarkLog(std::string algorithm, std::vector<int> message_lengths
 int main(int argc, char** argv) {
 	srand((unsigned int)time(NULL));
 
-	std::vector<int> message_lengths{0, 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000}; 
+	std::vector<int> message_lengths{0, 1, 10, 100, 1000, 10000, 100000, 1000000}; //, 10000000, 100000000}; 
 
 	int numSamples = 100;
 	std::cout << "How many samples would you like ";
@@ -206,16 +223,23 @@ int main(int argc, char** argv) {
 	
 	
 	// A list of all available algorithms
-	const char *availAlgs[] = {
+	//const char *availAlgs[] = {
 		// Round 3
 		//"picnic_L1_FS", "picnic_L1_UR", "picnic_L1_full", "picnic_L3_FS", "picnic_L3_UR", "picnic_L3_full", "picnic_L5_FS", "picnic_L5_UR", "picnic_L5_full", "picnic3_L1", "picnic3_L3", "picnic3_L5", "qTesla-p-I", "qTesla-p-III", "DILITHIUM_2", "DILITHIUM_3", "DILITHIUM_4", "Falcon-512", "Falcon-1024", "MQDSS-31-48", "MQDSS-31-64", "Rainbow-Ia-Classic", "Rainbow-Ia-Cyclic", "Rainbow-Ia-Cyclic-Compressed", "Rainbow-IIIc-Classic", "Rainbow-IIIc-Cyclic", "Rainbow-IIIc-Cyclic-Compressed", "Rainbow-Vc-Classic", "Rainbow-Vc-Cyclic", "Rainbow-Vc-Cyclic-Compressed", "SPHINCS+-Haraka-128f-robust", "SPHINCS+-Haraka-128f-simple", "SPHINCS+-Haraka-128s-robust", "SPHINCS+-Haraka-128s-simple", "SPHINCS+-Haraka-192f-robust", "SPHINCS+-Haraka-192f-simple", "SPHINCS+-Haraka-192s-robust", "SPHINCS+-Haraka-192s-simple", "SPHINCS+-Haraka-256f-robust", "SPHINCS+-Haraka-256f-simple", "SPHINCS+-Haraka-256s-robust", "SPHINCS+-Haraka-256s-simple", "SPHINCS+-SHA256-128f-robust", "SPHINCS+-SHA256-128f-simple", "SPHINCS+-SHA256-128s-robust", "SPHINCS+-SHA256-128s-simple", "SPHINCS+-SHA256-192f-robust", "SPHINCS+-SHA256-192f-simple", "SPHINCS+-SHA256-192s-robust", "SPHINCS+-SHA256-192s-simple", "SPHINCS+-SHA256-256f-robust", "SPHINCS+-SHA256-256f-simple", "SPHINCS+-SHA256-256s-robust", "SPHINCS+-SHA256-256s-simple", "SPHINCS+-SHAKE256-128f-robust", "SPHINCS+-SHAKE256-128f-simple", "SPHINCS+-SHAKE256-128s-robust", "SPHINCS+-SHAKE256-128s-simple", "SPHINCS+-SHAKE256-192f-robust", "SPHINCS+-SHAKE256-192f-simple", "SPHINCS+-SHAKE256-192s-robust", "SPHINCS+-SHAKE256-192s-simple", "SPHINCS+-SHAKE256-256f-robust", "SPHINCS+-SHAKE256-256f-simple", "SPHINCS+-SHAKE256-256s-robust", "SPHINCS+-SHAKE256-256s-simple"
-		
 		// Dilithium and Falcon
-		"DILITHIUM_2", "DILITHIUM_3", "DILITHIUM_4", "Falcon-512", "Falcon-1024",
-
+		//"DILITHIUM_2", "DILITHIUM_3", "DILITHIUM_4", "Falcon-512", "Falcon-1024",
 		// Rainbow
-		"Rainbow-Ia-Cyclic", "Rainbow-Ia-Classic", "Rainbow-Vc-Cyclic"
+		//"Rainbow-Ia-Cyclic", "Rainbow-Ia-Classic", "Rainbow-Vc-Cyclic"
+	//};
+
+	const char *availAlgs[] = {
+		"Dilithium2",
+		"Dilithium3", 
+		"Dilithium5",
+		"Falcon-512",
+		"Falcon-1024"
 	};
+
 	const int numberOfAlgorithms = sizeof(availAlgs) / sizeof(availAlgs[0]);
 
 	// INFINITE MAIN LOOP

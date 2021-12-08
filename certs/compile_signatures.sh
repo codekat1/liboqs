@@ -1,5 +1,6 @@
 rm -rf Signatures.o
 
+# -g for debugging
 g++ -g -o Signatures.o Signatures.cpp -L../build/lib -loqs
 
 LD_LIBRARY_PATH=/usr/local/lib

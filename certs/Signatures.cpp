@@ -4,8 +4,8 @@
 #include <cstring>
 #include <string>
 #include <stdio.h>
-
 #include <oqs/oqs.h>
+
 using namespace std;
 
 //#define NUMLOOPS 1000000
@@ -64,6 +64,7 @@ public:
 	~SignatureManager(){
 		free(public_key);
 		free(private_key);
+		free(signature);
 	}
 
 	// Generate a public and private key pair
