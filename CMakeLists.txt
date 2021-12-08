@@ -68,6 +68,9 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "s390x")
 elseif(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE)
     message(WARNING "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
     message(WARNING "Compilation on an unsupported processor should only be used for testing, as it may result an insecure configuration, for example due to variable-time instructions leaking secret information.")
+    # disable SIKE whose build fails on unsupported platforms
+    set(OQS_ENABLE_KEM_SIKE OFF)
+    set(OQS_ENABLE_KEM_SIDH OFF)
 else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR} ". Override by setting OQS_PERMIT_UNSUPPORTED_ARCHITECTURE=ON")
 endif()
@@ -87,6 +90,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInf
 else()
     set(OQS_DEBUG_BUILD OFF)
 endif()
+
+option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 
 if(WIN32)
     set(CMAKE_GENERATOR_CC cl)

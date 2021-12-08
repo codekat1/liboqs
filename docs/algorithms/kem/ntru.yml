@@ -18,8 +18,6 @@ crypto-assumption: NTRU in Z[x]/(q, x^n-1) with prime n and power-of-two q
 website: https://ntru.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
-spdx-license-identifier: CC0-1.0
-upstream: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0
 upstream-ancestors:
 - https://github.com/jschanck/ntru/tree/a43a4457
 parameter-sets:
@@ -39,6 +37,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -53,6 +52,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: NTRU-HPS-2048-677
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -69,6 +69,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -83,6 +84,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: NTRU-HPS-4096-821
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -99,6 +101,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -113,6 +116,24 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
+- name: NTRU-HPS-4096-1229
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1842
+  length-ciphertext: 1842
+  length-secret-key: 2366
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
 - name: NTRU-HRSS-701
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -129,6 +150,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -143,3 +165,24 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
+- name: NTRU-HRSS-1373
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 2401
+  length-ciphertext: 2401
+  length-secret-key: 2983
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
+primary-upstream:
+  spdx-license-identifier: CC0-1.0
+  source: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16

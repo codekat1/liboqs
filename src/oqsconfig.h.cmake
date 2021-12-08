@@ -39,6 +39,8 @@
 #cmakedefine OQS_USE_ARM_SHA3_INSTRUCTIONS 1
 #cmakedefine OQS_USE_ARM_NEON_INSTRUCTIONS 1
 
+#cmakedefine OQS_SPEED_USE_ARM_PMU 1
+
 #cmakedefine OQS_ENABLE_TEST_CONSTANT_TIME 1
 
 #cmakedefine OQS_ENABLE_SHA3_xkcp_low_avx2 1
@@ -145,8 +147,10 @@
 #cmakedefine OQS_ENABLE_KEM_ntru_hps2048677_avx2 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hps4096821 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hps4096821_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hps40961229 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hrss701 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hrss701_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntru_hrss1373 1
 
 #cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
 #cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr653 1
