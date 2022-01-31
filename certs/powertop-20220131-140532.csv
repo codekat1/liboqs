@@ -1,0 +1,422 @@
+____________________________________________________________________
+			P o w e r T O P
+
+____________________________________________________________________
+ *  *  *   System Information   *  *  *
+
+PowerTOP Version;v2.11-1-g7ef7f79 ran at Mon Jan 31 14:05:32 2022
+
+Kernel Version;Linux version 5.10.63-v7l+
+System Name;
+CPU Information;4 ARMv7 Processor rev 3 (v7l)
+OS Information;Raspbian GNU/Linux 11 (bullseye)
+
+Target: 1 units/s;System:  360.8 wakeup/s;CPU:  30.0% usage;GPU: 0 ops/s;GFX: 0 wakeups/s;VFS: 0 ops/s;
+
+____________________________________________________________________
+ *  *  *   Top 10 Power Consumers   *  *  *
+
+Usage;Events/s;Category;Description;PW Estimate
+  8.3%;121.1;Process;[PID 606] /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch ;  608 mW  
+  2.6%; 60.1;Process;[PID 1002] lxterminal ;  278 mW  
+ 11.6%; 0.00;Process;[PID 1826] powertop --csv output --iteration=10 --time=1 ;  180 mW  
+  2.1%; 33.1;Process;[PID 748] mutter ;  164 mW  
+  0.8%; 27.9;Interrupt;[19] IPI;  122 mW  
+  0.4%; 26.1;Process;[PID 437] /usr/sbin/thd --triggers /etc/triggerhappy/triggers.d/ --socket /run/thd.socket --user nobody --deviceglob /dev/input;  109 mW  
+  0.0%; 17.4;Timer;tick_sched_timer; 69.4 mW  
+  0.5%; 13.1;Process;[PID 756] pcmanfm --desktop --profile LXDE-pi ; 58.9 mW  
+  0.4%; 10.5;Process;[PID 208] [v3d_bin]; 47.4 mW  
+  1.1%;  4.4;Process;[PID 611] /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch ; 35.1 mW  
+
+____________________________________________________________________
+ *  *  *   Processor Idle State Report   *  *  *
+
+Package;0
+;
+;
+;
+
+CPU;0
+CPU;1
+CPU;2
+CPU;3
+;;
+;;
+;;
+;;
+;;
+;;
+;;
+;;
+;;
+;;
+;;
+;;
+
+____________________________________________________________________
+ *  *  *   Processor Frequency Report   *  *  *
+
+Package;0
+ 600 MHz;   0.0% 
+ 700 MHz;   0.0% 
+ 800 MHz;   0.0% 
+ 900 MHz;   0.0% 
+1000 MHz;   0.0% 
+1100 MHz;   0.0% 
+1200 MHz;   0.0% 
+1300 MHz;   0.0% 
+1400 MHz;   0.0% 
+1500 MHz;   0.0% 
+1.60 GHz;   0.0% 
+1.71 GHz;   0.0% 
+1.80 GHz;   0.0% 
+Idle; 100.0% 
+;
+;
+;
+;
+
+CPU 0
+ 600 MHz;   0.0% 
+ 700 MHz;   0.0% 
+ 800 MHz;   0.0% 
+ 900 MHz;   0.0% 
+1000 MHz;   0.0% 
+1100 MHz;   0.0% 
+1200 MHz;   0.0% 
+1300 MHz;   0.0% 
+1400 MHz;   0.0% 
+1500 MHz;   0.0% 
+1.60 GHz;   0.0% 
+1.71 GHz;   0.0% 
+1.80 GHz;   0.0% 
+Idle; 100.0% 
+CPU 1
+ 600 MHz;   0.0% 
+ 700 MHz;   0.0% 
+ 800 MHz;   0.0% 
+ 900 MHz;   0.0% 
+1000 MHz;   0.0% 
+1100 MHz;   0.0% 
+1200 MHz;   0.0% 
+1300 MHz;   0.0% 
+1400 MHz;   0.0% 
+1500 MHz;   0.0% 
+1.60 GHz;   0.0% 
+1.71 GHz;   0.0% 
+1.80 GHz;   0.0% 
+Idle; 100.0% 
+CPU 2
+ 600 MHz;   0.0% 
+ 700 MHz;   0.0% 
+ 800 MHz;   0.0% 
+ 900 MHz;   0.0% 
+1000 MHz;   0.0% 
+1100 MHz;   0.0% 
+1200 MHz;   0.0% 
+1300 MHz;   0.0% 
+1400 MHz;   0.0% 
+1500 MHz;   0.0% 
+1.60 GHz;   0.0% 
+1.71 GHz;   0.0% 
+1.80 GHz;   0.0% 
+Idle; 100.0% 
+CPU 3
+ 600 MHz;   0.0% 
+ 700 MHz;   0.0% 
+ 800 MHz;   0.0% 
+ 900 MHz;   0.0% 
+1000 MHz;   0.0% 
+1100 MHz;   0.0% 
+1200 MHz;   0.0% 
+1300 MHz;   0.0% 
+1400 MHz;   0.0% 
+1500 MHz;   0.0% 
+1.60 GHz;   0.0% 
+1.71 GHz;   0.0% 
+1.80 GHz;   0.0% 
+Idle; 100.0% 
+;
+;
+;
+;
+;
+;
+;
+;
+
+____________________________________________________________________
+ *  *  *   Overview of Software Power Consumers   *  *  *
+
+Usage;Wakeups/s;GPU ops/s;Disk IO/s;GFX Wakeups/s;Category;Description;PW Estimate
+ 82.8 ms/s;121.1;;;;Process;[PID 606] /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch ;  608 mW  
+ 25.9 ms/s; 60.1;;;;Process;[PID 1002] lxterminal ;  278 mW  
+115.6 ms/s;;;;;Process;[PID 1826] powertop --csv output --iteration=10 --time=1 ;  180 mW  
+ 21.5 ms/s; 33.1;;;;Process;[PID 748] mutter ;  164 mW  
+  7.5 ms/s; 27.9;;;;Interrupt;[19] IPI;  122 mW  
+  3.6 ms/s; 26.1;;;;Process;[PID 437] /usr/sbin/thd --triggers /etc/triggerhappy/triggers.d/ --socket /run/thd.socket --user nobody --deviceglob /dev/input;  109 mW  
+375.5 us/s; 17.4;;;;Timer;tick_sched_timer; 69.4 mW  
+  4.7 ms/s; 13.1;;;;Process;[PID 756] pcmanfm --desktop --profile LXDE-pi ; 58.9 mW  
+  3.9 ms/s; 10.5;;;;Process;[PID 208] [v3d_bin]; 47.4 mW  
+ 11.5 ms/s;  4.4;;;;Process;[PID 611] /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch ; 35.1 mW  
+  0.7 ms/s;  7.8;;;;Process;[PID 12] [rcu_sched]; 32.1 mW  
+ 80.2 us/s;  6.1;;;;kWork;dbs_work_handler; 24.2 mW  
+  3.4 ms/s;  4.4;;;;Interrupt;[0] HI_SOFTIRQ; 22.6 mW  
+137.7 us/s;  5.2;;;;kWork;kfree_rcu_work; 20.9 mW  
+ 54.3 us/s;  5.2;;;;kWork;kfree_rcu_monitor; 20.7 mW  
+  0.7 ms/s;  3.5;;;;Interrupt;[79] v3d; 14.9 mW  
+ 64.6 us/s;  3.5;;;;Timer;txdone_hrtimer; 13.9 mW  
+541.5 us/s;  1.7;;;;Timer;hrtimer_wakeup; 7.73 mW  
+ 70.0 us/s;  1.7;;;;Interrupt;[35] fe00b880.mailbox; 6.99 mW  
+ 63.2 us/s;  1.7;;;;Process;[PID 39] [kcompactd0]; 6.98 mW  
+  2.9 ms/s;;;;;Interrupt;[9] RCU(softirq); 4.49 mW  
+  2.9 ms/s;;;;;Process;[PID 209] [v3d_render]; 4.47 mW  
+  2.6 ms/s;;;;;Interrupt;[81] xhci_hcd; 3.99 mW  
+202.4 us/s;  0.9;;;;Timer;it_real_fn; 3.76 mW  
+ 69.5 us/s;  0.9;;;;kWork;phy_state_machine; 3.55 mW  
+ 36.2 us/s;  0.9;;;;kWork;drm_mode_rmfb_work_fn; 3.50 mW  
+ 10.7 us/s;  0.9;;;;Timer;sched_rt_period_timer; 3.46 mW  
+  0.0 us/s;  0.9;;;;kWork;get_values_poll; 3.44 mW  
+  0.0 us/s;  0.9;;;;kWork;v3d_clock_down_work; 3.44 mW  
+  0.0 us/s;  0.9;;;;kWork;mmc_rescan; 3.44 mW  
+  1.8 ms/s;;;;;Interrupt;[28] arch_timer; 2.82 mW  
+  1.0 ms/s;;;;;Interrupt;[7] sched(softirq); 1.55 mW  
+  0.8 ms/s;;;;;Process;[PID 754] lxpanel --profile LXDE-pi ; 1.22 mW  
+632.7 us/s;;;;;Process;[PID 1490] [kworker/u8:1];  987 uW  
+612.7 us/s;;;;;Process;[PID 1352] [kworker/3:0];  956 uW  
+595.8 us/s;;;;;Process;[PID 1350] [kworker/0:1];  929 uW  
+485.4 us/s;;;;;Process;[PID 1283] [kworker/1:3];  757 uW  
+421.6 us/s;;;;;Interrupt;[1] timer(softirq);  658 uW  
+416.7 us/s;;;;;Timer;delayed_work_timer_fn;  650 uW  
+397.5 us/s;;;;;Process;[PID 1285] mousepad /home/pi/Desktop/liboqs/spm/csv_files/8Gpi4-20220126-155958 ;  620 uW  
+311.3 us/s;;;;;Process;[PID 1836] pool-pcmanfm;  486 uW  
+245.0 us/s;;;;;Timer;process_timeout;  382 uW  
+126.9 us/s;;;;;Interrupt;[50] vc4 crtc;  198 uW  
+121.2 us/s;;;;;Interrupt;[21] IPI;  189 uW  
+108.1 us/s;;;;;Process;[PID 17] [ksoftirqd/1];  169 uW  
+ 57.2 us/s;;;;;Process;[PID 1186] [kworker/2:2];    0 mW  
+ 45.4 us/s;;;;;Process;[PID 885] /usr/libexec/gvfs-afc-volume-monitor ;    0 mW  
+ 41.6 us/s;;;;;Process;[PID 11] [ksoftirqd/0];    0 mW  
+ 40.5 us/s;;;;;Process;[PID 1489] [kworker/1:0];    0 mW  
+ 15.9 us/s;;;;;Interrupt;[66] mmc0;    0 mW  
+ 15.2 us/s;;;;;Interrupt;[72] eth0;    0 mW  
+ 12.1 us/s;;;;;Timer;writeout_period;    0 mW  
+  5.1 us/s;;;;;Interrupt;[66] mmc1;    0 mW  
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+
+
+The system baseline power is estimated at:  1.89  W;
+____________________________________________________________________
+ *  *  *   Device Power Report   *  *  *
+
+Usage;Device Name;PW Estimate
+ 30.0%;CPU use;  1.89 W   
+100.0%;USB device: xHCI Host Controller;           
+100.0%;runtime-fef05700.hdmi;           
+100.0%;PCI Device: VIA Technologies, Inc. VL805 USB 3.0 Host Controller;           
+100.0%;PCI Device: Broadcom Inc. and subsidiaries BCM2711 PCIe Bridge;           
+100.0%;USB device: Dell USB Entry Keyboard (DELL);           
+100.0%;USB device: USB2.0 Hub;           
+100.0%;USB device: USB Optical Mouse;           
+  0.0%;runtime-3e330000.framebuffer;           
+  0.0%;runtime-bcm2835-power;           
+  0.0%;runtime-hdmi-audio-codec.0.auto;           
+  0.0%;runtime-feb30000.vp9-decoder;           
+  0.0%;runtime-timer;           
+  0.0%;runtime-bcm2835_audio;           
+  0.0%;runtime-raspberrypi-hwmon;           
+  0.0%;runtime-fd580000.ethernet;           
+  0.0%;runtime-soc:firmware;           
+  0.0%;runtime-fe004000.txp;           
+  0.0%;runtime-fe200000.gpiomem;           
+  0.0%;runtime-feb00000.hevc-decoder;           
+  0.0%;runtime-unimac-mdio.-19;           
+  0.0%;runtime-fd5d2000.avs-monitor:thermal;           
+  0.0%;runtime-fd5d2000.avs-monitor;           
+  0.0%;runtime-chosen;           
+  0.0%;runtime-fe003000.timer;           
+  0.0%;runtime-soc:firmware:reset;           
+  0.0%;runtime-hdmi-audio-codec.1.auto;           
+  0.0%;runtime-fef09500.i2c;           
+  0.0%;runtime-soc:firmware:clocks;           
+  0.0%;runtime-snd-soc-dummy;           
+  0.0%;runtime-fe20a000.pixelvalve;           
+  0.0%;runtime-fe100000.watchdog;           
+  0.0%;runtime-bcm2835-isp;           
+  0.0%;runtime-fixedregulator_5v0;           
+  0.0%;runtime-kgdboc;           
+  0.0%;runtime-sd_io_1v8_reg;           
+  0.0%;runtime-fec12000.pixelvalve;           
+  0.0%;runtime-bcm2835-codec;           
+  0.0%;runtime-arm-pmu;           
+  0.0%;runtime-fixedregulator_3v3;           
+  0.0%;runtime-hdmi-audio-codec.5.auto;           
+  0.0%;runtime-emmc2bus;           
+  0.0%;runtime-fe400000.hvs;           
+  0.0%;runtime-Fixed MDIO bus.0;           
+  0.0%;runtime-phy;           
+  0.0%;runtime-v3dbus;           
+  0.0%;runtime-fe216000.pixelvalve;           
+  0.0%;runtime-soc:power;           
+  0.0%;runtime-fe300000.mmcnr;           
+  0.0%;runtime-fec00000.v3d;           
+  0.0%;runtime-fe215000.aux;           
+  0.0%;runtime-soc:vcsm;           
+  0.0%;runtime-fe206000.pixelvalve;           
+  0.0%;runtime-gpu;           
+  0.0%;runtime-feb20000.h264-decoder;           
+  0.0%;runtime-fe200000.gpio;           
+  0.0%;runtime-soc:firmware:gpio;           
+  0.0%;runtime-fef00700.hdmi;           
+  0.0%;runtime-feb10000.rpivid-local-intc;           
+  0.0%;runtime-fe00b840.mailbox;           
+  0.0%;runtime-vcsm-cma;           
+  0.0%;runtime-cpufreq-dt;           
+  0.0%;radio:hci0;           
+  0.0 pkts/s;Network interface: wlan0 (brcmfmac);           
+  0.0 pkts/s;Network interface: eth0 (bcmgenet);           
+  0.0%;runtime-hdmi-audio-codec.4.auto;           
+  0.0%;runtime-fe104000.rng;           
+  0.0%;runtime-fe007000.dma;           
+  0.0%;runtime-3ef60340.nvram;           
+  0.0%;runtime-reg-dummy;           
+  0.0%;Radio device: brcmfmac;           
+  0.0%;runtime-raspberrypi-cpufreq;           
+  0.0%;runtime-hdmi-audio-codec.3.auto;           
+  0.0%;USB device: xHCI Host Controller;           
+  0.0%;runtime-fe00b880.mailbox;           
+  0.0%;runtime-hdmi-audio-codec.2.auto;           
+  0.0%;runtime-fe340000.mmc;           
+  0.0%;runtime-leds;           
+  0.0%;runtime-fe207000.pixelvalve;           
+  0.0%;runtime-fd500000.pcie;           
+  0.0%;runtime-fe007b00.dma;           
+  0.0%;runtime-bcm2835-camera;           
+  0.0%;runtime-soc;           
+  0.0%;I2C Adapter (i2c-21): Broadcom STB : ;           
+  0.0%;I2C Adapter (i2c-20): Broadcom STB : ;           
+  0.0%;runtime-fe101000.cprman;           
+  0.0%;runtime-fef00000.clock;           
+  0.0%;runtime-sd_vcc_reg;           
+  0.0%;runtime-ff800000.local_intc;           
+  0.0%;runtime-bcm2835-wdt;           
+  0.0%;runtime-scb;           
+  0.0%;runtime-fef04500.i2c;           
+  0.0%;runtime-regulatory.0;           
+____________________________________________________________________
+ *  *  *   Process Device Activity   *  *  *
+
+Process;Device
+systemd;/dev/autofs
+;/dev/kmsg
+;/dev/rfkill
+systemd-journal;/dev/kmsg
+;/dev/kmsg
+systemd-logind;/dev/input/event1
+;/dev/input/event2
+;/dev/input/event3
+thd;/dev/input/event0
+;/dev/input/event1
+rngd;/dev/hwrng
+;/dev/random
+wpa_supplicant;/dev/rfkill
+;/dev/rfkill
+Xorg;/dev/dri/card1
+;/dev/dri/card1
+;/dev/dri/card1
+;/dev/dri/card1
+;/dev/dri/renderD128
+;/dev/dri/renderD128
+;/dev/input/event0
+;/dev/input/event1
+;/dev/input/event2
+;/dev/input/event3
+;/dev/vga_arbiter
+pulseaudio;/dev/snd/controlC0
+;/dev/snd/controlC2
+gvfsd-fuse;/dev/fuse
+bluetoothd;/dev/rfkill
+mutter;/dev/dri/card1
+;/dev/dri/card1
+;/dev/dri/renderD128
+lxpanel;/dev/dri/card1
+;/dev/dri/card1
+;/dev/dri/renderD128
+pcmanfm;/dev/dri/card1
+;/dev/dri/card1
+;/dev/dri/renderD128
+
+____________________________________________________________________
+ *  *  *   AHCI ALPM Residency Statistics - Not supported on this macine   *  *  *
+
+____________________________________________________________________
+ *  *  *   Software Settings in Need of Tuning   *  *  *
+
+Description;Script
+VM writeback timeout;echo '1500' > '/proc/sys/vm/dirty_writeback_centisecs';
+Autosuspend for USB device USB Optical Mouse [1-1.1];echo 'auto' > '/sys/bus/usb/devices/1-1.1/power/control';
+Autosuspend for USB device Dell USB Entry Keyboard [DELL];echo 'auto' > '/sys/bus/usb/devices/1-1.2/power/control';
+Runtime PM for PCI Device Broadcom Inc. and subsidiaries BCM2711 PCIe Bridge;echo 'auto' > '/sys/bus/pci/devices/0000:00:00.0/power/control';
+Runtime PM for PCI Device VIA Technologies, Inc. VL805 USB 3.0 Host Controller;echo 'auto' > '/sys/bus/pci/devices/0000:01:00.0/power/control';
+____________________________________________________________________
+ *  *  *   Untunable Software Issues   *  *  *
+
+Description
+I2C Adapter i2c-21 has no runtime power management
+I2C Adapter i2c-20 has no runtime power management
+____________________________________________________________________
+ *  *  *   Optimal Tuned Software Settings   *  *  *
+
+Description
+Wireless Power Saving for interface wlan0
+Bluetooth device interface status
+Autosuspend for USB device xHCI Host Controller [usb1]
+Autosuspend for USB device USB2.0 Hub [1-1]
+Autosuspend for USB device xHCI Host Controller [usb2]
+
