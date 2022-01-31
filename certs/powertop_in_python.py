@@ -44,6 +44,8 @@ def getPowerTopInfo():
 	powerUsageBaselineUnit = ''
 	powerUsage = '0'
 	powerUsageUnit = ''
+	signaturesPowerUsage = '0'
+	signaturesPowerUnit = ''
 
 
 	if not isPowerTopRunning(): return {
@@ -56,6 +58,8 @@ def getPowerTopInfo():
 		'powerUsageUnit': powerUsageUnit,
 		'powerUsageBaseline': powerUsageBaseline,
 		'powerUsageBaselineUnit': powerUsageBaselineUnit,
+		'signaturesPowerUsage': signaturesPowerUsage,
+		'signaturesPowerUnit': signaturesPowerUnit
 	}
 
 	powertopPath = os.path.expanduser('~/powertop.csv')
