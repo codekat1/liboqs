@@ -14,6 +14,9 @@ if not isSudo():
 def terminal(cmd):
 	return os.popen(cmd).read()
 
+# def stopPowertops():
+# 	terminal('sudo pkill powertop')
+
 def startPowerTop():
 	if isPowerTopRunning(): return
 	
@@ -32,7 +35,6 @@ def isPowerTopRunning():
 	return process != ''
 
 def getPowerTopInfo():
-
 	powertopVersion = ''
 	kernelVersion = ''
 	systemName = ''
@@ -56,7 +58,10 @@ def getPowerTopInfo():
 		'powerUsageBaselineUnit': powerUsageBaselineUnit,
 	}
 
-	powertopPath = os.path.expanduser('~/Desktop/powertop.csv')
+	powertopPath = os.path.expanduser('~/powertop.csv')
+	print(f'Creating {powertopPath}')
+	temp = open(powertopPath, 'w+')
+	temp.close()
 	output = terminal('sudo powertop --time=1 --csv=' + powertopPath)
 	print('\n\n\nPowertop output: "' + output + '"')
 
