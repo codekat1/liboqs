@@ -102,6 +102,12 @@ def getPowerTopInfo():
 		powerUsageBaseline = match.group(1)
 		powerUsageBaselineUnit = match.group(2)
 
+	_signaturesUsage = terminal(f'cat {powertopPath} | grep "] ./Signatures.o ; "').strip()
+	match = re.match(r'[^\]]+\] \./Signatures.o ; +([0-9\.]+) ([a-zA-Z]+)', _signaturesUsage)
+	if match is not None:
+		signaturesPowerUsage = match.group(1)
+		signaturesPowerUnit = match.group(2)
+
 	return {
 		'powertopVersion': powertopVersion,
 		'kernelVersion': kernelVersion,
@@ -112,10 +118,19 @@ def getPowerTopInfo():
 		'powerUsageUnit': powerUsageUnit.replace(' ', ''),
 		'powerUsageBaseline': powerUsageBaseline,
 		'powerUsageBaselineUnit': powerUsageBaselineUnit.replace(' ', ''),
+		'signaturesPowerUsage': signaturesPowerUsage,
+		'signaturesPowerUnit': signaturesPowerUnit
 	}
-
-
 
 startPowerTop()
 
+#outputFile = open('logged')
+
 print(getPowerTopInfo())
+
+# while True:
+# 	time.sleep(1)
+# 	try:
+# 		print(getPowerTopInfo())
+# 	except KeyboardInterrupt:
+# 		break
