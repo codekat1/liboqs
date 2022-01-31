@@ -134,6 +134,14 @@ outputFile = open('loggedPowerOutput.csv', 'w+')
 line = ''
 line += 'Timestamp,'
 line += 'Timestamp (s),'
+	line += 'CPU %,'
+	line += 'CPU Frequency,'
+	line += 'Virtual Memory %,'
+	line += 'Virtual Memory,'
+	line += 'Swap Memory %,'
+	line += 'Swap Memory,'
+	line += 'Disk Usage %,'
+	line += 'Disk Usage,'
 line += 'Powertop Version,'
 line += 'Kernel Version,'
 line += 'System Name,'
@@ -160,6 +168,31 @@ while True:
 		line = ''
 		line += str(now) + ','
 		line += str(seconds) + ','
+
+
+		# CPU, memory, disk usage logger
+		cpu = psutil.cpu_percent()
+		cpu_f = 0
+		try:
+			cpu_f = psutil.cpu_freq().current
+		except: pass
+		v_mem_p = psutil.virtual_memory().percent
+		v_mem = psutil.virtual_memory().used
+		s_mem_p = psutil.swap_memory().percent
+		s_mem = psutil.swap_memory().used
+		disk_usage_p = psutil.disk_usage('/').percent
+		disk_usage = psutil.disk_usage('/').used
+
+		line += str(cpu) + ','
+		line += str(cpu_f) + ','
+		line += str(v_mem_p) + ','
+		line += str(v_mem) + ','
+		line += str(s_mem_p) + ','
+		line += str(s_mem) + ','
+		line += str(disk_usage_p) + ','
+		line += str(disk_usage) + ','
+
+		# Power logger
 		line += str(powerStats['powertopVersion']) + ','
 		line += str(powerStats['kernelVersion']) + ','
 		line += str(powerStats['systemName']) + ','
