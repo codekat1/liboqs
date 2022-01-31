@@ -3,6 +3,7 @@ import datetime
 import os
 import re
 import sys
+import time
 
 def isSudo():
 	return os.geteuid() == 0
@@ -159,17 +160,17 @@ while True:
 		line = ''
 		line += str(now) + ','
 		line += str(seconds) + ','
-		line += str(powerStats.powertopVersion) + ','
-		line += str(powerStats.kernelVersion) + ','
-		line += str(powerStats.systemName) + ','
-		line += str(powerStats.cpuInformation) + ','
-		line += str(powerStats.osInformation) + ','
-		line += str(powerStats.powerUsage) + ','
-		line += str(powerStats.powerUsageUnit) + ','
-		line += str(powerStats.powerUsageBaseline) + ','
-		line += str(powerStats.powerUsageBaselineUnit) + ','
-		line += str(powerStats.signaturesPowerUsage) + ','
-		line += str(powerStats.signaturesPowerUnit) + ','
+		line += str(powerStats['powertopVersion']) + ','
+		line += str(powerStats['kernelVersion']) + ','
+		line += str(powerStats['systemName']) + ','
+		line += str(powerStats['cpuInformation']) + ','
+		line += str(powerStats['osInformation']) + ','
+		line += str(powerStats['powerUsage']) + ','
+		line += str(powerStats['powerUsageUnit']) + ','
+		line += str(powerStats['powerUsageBaseline']) + ','
+		line += str(powerStats['powerUsageBaselineUnit']) + ','
+		line += str(powerStats['signaturesPowerUsage']) + ','
+		line += str(powerStats['signaturesPowerUnit']) + ','
 		outputFile.write(line + '\n')
 
 		print(f'Logged power sample #{sampleCounter}')
