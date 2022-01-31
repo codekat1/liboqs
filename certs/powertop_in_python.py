@@ -1,4 +1,5 @@
 import csv
+import datetime
 import os
 import re
 import sys
@@ -128,13 +129,50 @@ def getPowerTopInfo():
 
 startPowerTop()
 
-#outputFile = open('logged')
+outputFile = open('loggedPowerOutput.csv', 'w+')
+line = ''
+line += 'Timestamp,'
+line += 'Timestamp (s),'
+line += 'Powertop Version,'
+line += 'Kernel Version,'
+line += 'System Name,'
+line += 'CPU Stats,'
+line += 'OS Stats,'
+line += 'Power Usage,'
+line += 'Unit,'
+line += 'Baseline Power,'
+line += 'Unit,'
+line += 'Signatures Power,'
+line += 'Signatures Unit,'
+outputFile.write(line + '\n')
 
 print(getPowerTopInfo())
 
-# while True:
-# 	time.sleep(1)
-# 	try:
-# 		print(getPowerTopInfo())
-# 	except KeyboardInterrupt:
-# 		break
+sampleCounter = 1
+while True:
+	time.sleep(1)
+	try:
+		now = datetime.datetime.now()
+		seconds = (now - datetime.datetime(1970, 1, 1)).total_seconds()
+
+		powerStats = getPowerTopInfo()
+		line = ''
+		line += str(now) + ','
+		line += str(seconds) + ','
+		line += str(powerStats.powertopVersion) + ','
+		line += str(powerStats.kernelVersion) + ','
+		line += str(powerStats.systemName) + ','
+		line += str(powerStats.cpuInformation) + ','
+		line += str(powerStats.osInformation) + ','
+		line += str(powerStats.powerUsage) + ','
+		line += str(powerStats.powerUsageUnit) + ','
+		line += str(powerStats.powerUsageBaseline) + ','
+		line += str(powerStats.powerUsageBaselineUnit) + ','
+		line += str(powerStats.signaturesPowerUsage) + ','
+		line += str(powerStats.signaturesPowerUnit) + ','
+		outputFile.write(line + '\n')
+
+		print(f'Logged power sample #{sampleCounter}')
+		sampleCounter += 1
+	except KeyboardInterrupt:
+		break
