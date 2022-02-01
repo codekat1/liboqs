@@ -9,7 +9,7 @@
 using namespace std;
 
 //#define NUMLOOPS 1000000
-#define LOOP_TIME 5
+#define LOOP_TIME 600
 
 /*
 	algorithm: What algorithm the instance of the class is using
@@ -166,7 +166,7 @@ string benchmarkLog(string algorithm, int n) {
 		time(&start_time);
 		time(&end_time);
 		
-		cout << "BEG KEYGEN..." << time(&start_time) << endl;
+		cout << "BEG KEYGEN..." << start_time << endl;
 		// for(int i = 0; i < NUMLOOPS; i++) {
 		while((end_time - start_time) < LOOP_TIME){
 			t2a = clock();
@@ -175,10 +175,10 @@ string benchmarkLog(string algorithm, int n) {
 			time(&end_time);
 		}
 		// }
-		cout << "END KEYGEN..." << time(&end_time) << endl;
+		cout << "END KEYGEN..." << end_time << endl;
 		
 		time(&start_time);
-		cout << "BEG SIGN..." << time(&start_time) << endl;
+		cout << "BEG SIGN..." << start_time << endl;
 		//for(int i = 0; i < NUMLOOPS; i++) {
 		while((end_time - start_time) < LOOP_TIME){
 			t3a = clock();
@@ -190,10 +190,10 @@ string benchmarkLog(string algorithm, int n) {
 			// *signature = '\0';
 			time(&end_time);
 		}
-		cout << "END SIGN..." << time(&end_time) << endl;
+		cout << "END SIGN..." << end_time << endl;
 
 		time(&start_time);
-		cout << "BEG VERIFY..." << time(&start_time) << endl;
+		cout << "BEG VERIFY..." << start_time << endl;
 		// for(int i = 0; i < NUMLOOPS; i++) {
 		while((end_time - start_time) < LOOP_TIME){
 			t4a = clock();
@@ -201,7 +201,7 @@ string benchmarkLog(string algorithm, int n) {
 			t4b = clock();
 			time(&end_time);
 		}
-		cout << "END VERIFY..." << time(&end_time) << endl;
+		cout << "END VERIFY..." << end_time << endl;
 
 		clocks_initialization += (t1b - t1a);
 		clocks_keypair_generation += (t2b - t2a);
