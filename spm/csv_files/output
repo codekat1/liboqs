@@ -1,0 +1,98 @@
+8Gpi4-20220126-155922:  4.0 ms/s;  0.3;;;;Process;[PID 9943] g++ -g -o Signatures.o Signatures.cpp -L../build/lib -loqs ; 7.53 mW  
+8Gpi4-20220126-160052: 98.1%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160052:981.3 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160251: 96.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160251:964.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160134: 96.7%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160134:967.1 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160234: 96.3%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160234:963.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160213: 99.1%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.55 W  
+8Gpi4-20220126-160213:990.8 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.55 W  
+8Gpi4-20220126-160102: 97.0%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160102:970.1 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160155: 97.1%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160155:971.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160125: 98.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160125:984.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-155954: 97.3%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-155954:972.7 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160057: 97.3%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160057:972.8 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160151: 98.7%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160151:986.7 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160200: 98.3%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160200:983.3 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160039: 96.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160039:963.7 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160204: 95.2%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.49 W  
+8Gpi4-20220126-160204:952.3 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.49 W  
+8Gpi4-20220126-160003: 96.8%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160003:968.3 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160243: 97.0%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160243:969.5 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160111: 96.5%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160111:965.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160012: 92.8%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.45 W  
+8Gpi4-20220126-160012:928.4 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.45 W  
+8Gpi4-20220126-160217: 99.2%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.55 W  
+8Gpi4-20220126-160217:992.4 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.55 W  
+8Gpi4-20220126-160208: 98.9%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160208:988.6 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160230: 96.6%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160230:966.1 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-155940: 98.1%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-155940:980.5 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160048: 97.6%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160048:975.5 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160221: 95.8%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160221:958.4 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-155945: 96.5%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-155945:964.8 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160035: 97.1%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160035:970.6 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-155936: 98.6%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-155936:985.7 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160225: 98.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160225:984.3 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160120: 97.3%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160120:972.7 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160142: 96.5%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160142:965.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160238: 95.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.49 W  
+8Gpi4-20220126-160238:954.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.49 W  
+8Gpi4-20220126-160247: 96.2%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160247:962.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160138: 98.2%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160138:982.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160007: 98.9%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160007:988.5 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160021: 94.6%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.48 W  
+8Gpi4-20220126-160021:945.6 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.48 W  
+8Gpi4-20220126-160025: 87.8%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.37 W  
+8Gpi4-20220126-160025:878.3 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.37 W  
+8Gpi4-20220126-155927: 98.9%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-155927:989.4 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-160030: 97.5%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160030:975.3 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-155931: 98.6%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-155931:986.5 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.54 W  
+8Gpi4-20220126-155931: 70.2 us/s;  0.3;;;;Process;[PID 2305] geany /home/pi/Desktop/liboqs/certs/Signatures.cpp ; 1.38 mW  
+8Gpi4-20220126-160129: 98.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160129:984.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160044: 97.3%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160044:972.8 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.52 W  
+8Gpi4-20220126-160256: 96.5%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-160256:965.1 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.51 W  
+8Gpi4-20220126-155958: 96.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-155958:963.8 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160146: 96.4%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160146:964.0 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.50 W  
+8Gpi4-20220126-160016: 84.8%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.32 W  
+8Gpi4-20220126-160016:847.6 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.32 W  
+8Gpi4-20220126-155949: 97.9%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-155949:979.2 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160116: 90.8%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.42 W  
+8Gpi4-20220126-160116:907.9 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.42 W  
+8Gpi4-20220126-160107: 97.9%; 0.00;Process;[PID 9950] ./Signatures.o ;  1.53 W  
+8Gpi4-20220126-160107:979.4 ms/s;;;;;Process;[PID 9950] ./Signatures.o ;  1.53 W  

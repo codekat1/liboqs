@@ -1,0 +1,12 @@
+exp01 - 2/2/22
+
+Bluetooth OFF 
+Wifi ON - connected to wifi
+
+Ran Powertop base measurements for 3 minutes - then ran cipher script, each loop for 10 minutes
+Total time ~2.5hr
+
+Cipher timestamps located in signaturesOutput.txt
+
+
+
