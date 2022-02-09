@@ -1,0 +1,6 @@
+2/9/2022
+
+"Sanity Check" experiment - see if powertop measures a difference between various settings being off and on - to see if powertop is even that sensitive
+
+Running WIFI on (not connected) AND BLUETOOTH off for 10 minutes - getting baseline system measurement
+

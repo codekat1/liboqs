@@ -1,0 +1,13 @@
+The following experiments were conducted with the ciphers running
+
+exp01 - bluetooth ON - not connected - wifi OFF
+exp02 - bluetooth OFF - WIFI OFF
+exp03 - bluetooth off - wifi ON - CONNECTED
+
+The following baseline experiments were run without the ciphers
+
+exp04 - WIFI OFF AND BLUETOOTH OFF
+exp05 - WIFI OFF AND BLUETOOTH ON (not connected)
+exp06 - WIFI on (not connected) AND BLUETOOTH off
+exp07 - WIFI on (not connected) AND BLUETOOTH on (not connected)
+
