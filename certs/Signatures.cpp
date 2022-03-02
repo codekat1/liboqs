@@ -5,11 +5,12 @@
 #include <string>
 #include <stdio.h>
 #include <oqs/oqs.h>
+#include <unistd.h>
 
 using namespace std;
 
 //#define NUMLOOPS 1000000
-#define LOOP_TIME 100
+#define LOOP_TIME 600
 /*
 	algorithm: What algorithm the instance of the class is using
 	public_key_length: Bytes of the public key
@@ -150,15 +151,11 @@ string benchmarkLog(string algorithm, int n) {
 	double clocks_verifying = 0;
 	for(int i = 0; i < n; i++) {
 
-		clock_t t1a, t1b, t2a, t2b, t3a, t3b, t4a, t4b;
 		unsigned char* signature;
 		bool result;
 		char c;
 
-
-		t1a = clock();
-    		SignatureManager sigmanager(algorithm);
-		t1b = clock();
+    	SignatureManager sigmanager(algorithm);
 
 		time_t start_time;
 		time_t end_time;
@@ -170,93 +167,63 @@ string benchmarkLog(string algorithm, int n) {
 		time(&end_time);
 		
 		
-		cout << "BEG KEYGEN..." << start_time << endl;
+		cout << "BEG KEYGEN... CLEAR DATA " << start_time << endl;
 		while((end_time - start_time) < LOOP_TIME){
-			t2a = clock();
 			sigmanager.generate_keypair();
-			t2b = clock();
 			time(&end_time);
 		}
-		cout << "END KEYGEN..." << end_time << endl;
+		cout << "END KEYGEN... EXPORT & SAVE FILE " << end_time << endl;
 		
-		//hold for ten seconds to let the system stabilize
-		sleep(10);	
+		//hold for 60 seconds to export and save file
+		sleep(60);	
 			
 		time(&start_time);
-		cout << "BEG SIGN..." << start_time << endl;
-		//for(int i = 0; i < NUMLOOPS; i++) {
+		cout << "BEG SIGN... CLEAR DATA " << start_time << endl;
+
 		while((end_time - start_time) < LOOP_TIME){
-			t3a = clock();
-				signature = sigmanager.sign(message);
-			t3b = clock();
-			//free(signature);
-			//signature = NULL;
-			// if(*signature != '\0') free(signature);
-			// *signature = '\0';
+			signature = sigmanager.sign(message);
 			time(&end_time);
 		}
-		cout << "END SIGN..." << end_time << endl;
+		cout << "END SIGN... EXPORT SAVE FILE " << end_time << endl;
 
-		//hold for ten seconds to let the system stabilize
-		sleep(10);
+		//hold for 60 seconds to export and save file
+		sleep(60);
 		
 		time(&start_time);
-		cout << "BEG VERIFY..." << start_time << endl;
-		// for(int i = 0; i < NUMLOOPS; i++) {
+		cout << "BEG VERIFY... CLEAR DATA " << start_time << endl;
+
 		while((end_time - start_time) < LOOP_TIME){
-			t4a = clock();
-				result = sigmanager.verify(message, signature);
-			t4b = clock();
+			result = sigmanager.verify(message, signature);
 			time(&end_time);
 		}
-		cout << "END VERIFY..." << end_time << endl;
-
-		clocks_initialization += (t1b - t1a);
-		clocks_keypair_generation += (t2b - t2a);
-		clocks_signing += (t3b - t3a);
-		clocks_verifying += (t4b - t4a);
+		cout << "END VERIFY... EXPORT & SAVE FILE " << end_time << endl;
 		
 	}
 
-	clocks_initialization /= (double)n;
-	clocks_keypair_generation /= (double)n;
-	clocks_signing /= (double)n;
-	clocks_verifying /= (double)n;
 
-	double ms_initialization = clocks_initialization / (double)(CLOCKS_PER_SEC / 1000);
-	double ms_keypair_generation = clocks_keypair_generation / (double)(CLOCKS_PER_SEC / 1000);
-	double ms_signing = clocks_signing / (double)(CLOCKS_PER_SEC / 1000);
-	double ms_verifying =  clocks_verifying / (double)(CLOCKS_PER_SEC / 1000);
 
 	// Used to quickly grab the key and signature lengths
     SignatureManager sigmanager(algorithm);
 
- 	cout << "    Seconds: i-" << ms_initialization << "/k-" << clocks_keypair_generation << "/s-" << clocks_signing << "/v-" << clocks_verifying << " ms\t";
-	cout << "Bytes: " << (sigmanager.public_key_length + sigmanager.signature_length) << "\t";
-	cout << algorithm;
-	cout << endl;
-
 
 	string row = "";
-	row += "\"" + algorithm + "\",";
-	row += to_string(sigmanager.public_key_length) + ",";
-	row += to_string(sigmanager.private_key_length) + ",";
-	row += to_string(sigmanager.signature_length) + ",";
-	row += to_string(sigmanager.public_key_length + sigmanager.signature_length) + ",";
-	row += to_string(n) + ",";
-	row += "\"" + message + "\",";
-	row += to_string(ms_initialization) + ",";
-	row += to_string(ms_keypair_generation) + ",";
-	row += to_string(ms_signing) + ",";
-	row += to_string(ms_verifying) + ",";
+	//row += "\"" + algorithm + "\",";
+	//row += to_string(sigmanager.public_key_length) + ",";
+	//row += to_string(sigmanager.private_key_length) + ",";
+	//row += to_string(sigmanager.signature_length) + ",";
+	//row += to_string(sigmanager.public_key_length + sigmanager.signature_length) + ",";
+	//row += to_string(n) + ",";
+	//row += "\"" + message + "\",";
+	//row += to_string(ms_initialization) + ",";
+	//row += to_string(ms_keypair_generation) + ",";
+	//row += to_string(ms_signing) + ",";
+	//row += to_string(ms_verifying) + ",";
 	return row;
 }
 
 int main(int argc, char** argv) {
 
 	int numSamples = 1;
-	//cout << "How many samples would you like ";
-	//cin >> numSamples;
 
 	string fileName = "Algorithm_benchmark_" + to_string(numSamples) + ".csv";
 
@@ -265,14 +232,7 @@ int main(int argc, char** argv) {
 
 	outputFile << benchmarkLogHeader() << endl;
 	
-	//cout << "Listing available algorithms:"<<"\n";
-
-	// A list of all available algorithms
-	//const char *availAlgs[63]={"DILITHIUM_2","DILITHIUM_3","DILITHIUM_4","Falcon-512","Falcon-1024","MQDSS-31-48","MQDSS-31-64","Rainbow-Ia-Classic","Rainbow-Ia-Cyclic","Rainbow-Ia-Cyclic-Compressed","Rainbow-IIIc-Classic","Rainbow-IIIc-Cyclic","Rainbow-IIIc-Cyclic-Compressed","Rainbow-Vc-Classic","Rainbow-Vc-Cyclic","Rainbow-Vc-Cyclic-Compressed","SPHINCS+-Haraka-128f-robust","SPHINCS+-Haraka-128f-simple","SPHINCS+-Haraka-128s-robust","SPHINCS+-Haraka-128s-simple","SPHINCS+-Haraka-192f-robust","SPHINCS+-Haraka-192f-simple","SPHINCS+-Haraka-192s-robust","SPHINCS+-Haraka-192s-simple","SPHINCS+-Haraka-256f-robust","SPHINCS+-Haraka-256f-simple","SPHINCS+-Haraka-256s-robust","SPHINCS+-Haraka-256s-simple","SPHINCS+-SHA256-128f-robust","SPHINCS+-SHA256-128f-simple","SPHINCS+-SHA256-128s-robust","SPHINCS+-SHA256-128s-simple","SPHINCS+-SHA256-192f-robust","SPHINCS+-SHA256-192f-simple","SPHINCS+-SHA256-192s-robust","SPHINCS+-SHA256-192s-simple","SPHINCS+-SHA256-256f-robust","SPHINCS+-SHA256-256f-simple","SPHINCS+-SHA256-256s-robust","SPHINCS+-SHA256-256s-simple","SPHINCS+-SHAKE256-128f-robust","SPHINCS+-SHAKE256-128f-simple","SPHINCS+-SHAKE256-128s-robust","SPHINCS+-SHAKE256-128s-simple","SPHINCS+-SHAKE256-192f-robust","SPHINCS+-SHAKE256-192f-simple","SPHINCS+-SHAKE256-192s-robust","SPHINCS+-SHAKE256-192s-simple","SPHINCS+-SHAKE256-256f-robust","SPHINCS+-SHAKE256-256f-simple","SPHINCS+-SHAKE256-256s-robust","SPHINCS+-SHAKE256-256s-simple","picnic_L1_FS","picnic_L1_UR","picnic_L3_FS","picnic_L3_UR","picnic_L5_FS","picnic_L5_UR","picnic2_L1_FS","picnic2_L3_FS","picnic2_L5_FS","qTesla-p-I","qTesla-p-III"};
-
-	// const char *availAlgs[] = {
-	// 	"picnic_L1_FS", "picnic_L1_UR", "picnic_L1_full", "picnic_L3_FS", "picnic_L3_UR", "picnic_L3_full", "picnic_L5_FS", "picnic_L5_UR", "picnic_L5_full", "picnic3_L1", "picnic3_L3", "picnic3_L5", "qTesla-p-I", "qTesla-p-III", "DILITHIUM_2", "DILITHIUM_3", "DILITHIUM_4", "Falcon-512", "Falcon-1024", "MQDSS-31-48", "MQDSS-31-64", "Rainbow-Ia-Classic", "Rainbow-Ia-Cyclic", "Rainbow-Ia-Cyclic-Compressed", "Rainbow-IIIc-Classic", "Rainbow-IIIc-Cyclic", "Rainbow-IIIc-Cyclic-Compressed", "Rainbow-Vc-Classic", "Rainbow-Vc-Cyclic", "Rainbow-Vc-Cyclic-Compressed", "SPHINCS+-Haraka-128f-robust", "SPHINCS+-Haraka-128f-simple", "SPHINCS+-Haraka-128s-robust", "SPHINCS+-Haraka-128s-simple", "SPHINCS+-Haraka-192f-robust", "SPHINCS+-Haraka-192f-simple", "SPHINCS+-Haraka-192s-robust", "SPHINCS+-Haraka-192s-simple", "SPHINCS+-Haraka-256f-robust", "SPHINCS+-Haraka-256f-simple", "SPHINCS+-Haraka-256s-robust", "SPHINCS+-Haraka-256s-simple", "SPHINCS+-SHA256-128f-robust", "SPHINCS+-SHA256-128f-simple", "SPHINCS+-SHA256-128s-robust", "SPHINCS+-SHA256-128s-simple", "SPHINCS+-SHA256-192f-robust", "SPHINCS+-SHA256-192f-simple", "SPHINCS+-SHA256-192s-robust", "SPHINCS+-SHA256-192s-simple", "SPHINCS+-SHA256-256f-robust", "SPHINCS+-SHA256-256f-simple", "SPHINCS+-SHA256-256s-robust", "SPHINCS+-SHA256-256s-simple", "SPHINCS+-SHAKE256-128f-robust", "SPHINCS+-SHAKE256-128f-simple", "SPHINCS+-SHAKE256-128s-robust", "SPHINCS+-SHAKE256-128s-simple", "SPHINCS+-SHAKE256-192f-robust", "SPHINCS+-SHAKE256-192f-simple", "SPHINCS+-SHAKE256-192s-robust", "SPHINCS+-SHAKE256-192s-simple", "SPHINCS+-SHAKE256-256f-robust", "SPHINCS+-SHAKE256-256f-simple", "SPHINCS+-SHAKE256-256s-robust", "SPHINCS+-SHAKE256-256s-simple"
-	// };
+	
 	const char *availAlgs[] = {
 		//"Dilithium2"//,
 		//"Dilithium3"//, 
@@ -284,8 +244,9 @@ int main(int argc, char** argv) {
     
     for (int i = 0; i < numberOfAlgorithms; i++) {
 		string algorithm = availAlgs[i];
+		cout << "Running " << algorithm << endl;
     	try {
-			cout << "Progress: " << (100 * (i + 1) / float(numberOfAlgorithms)) << "%" << endl;
+			//cout << "Progress: " << (100 * (i + 1) / float(numberOfAlgorithms)) << "%" << endl;
 			string row = benchmarkLog(algorithm, numSamples);
 			outputFile << row << endl;
 		} catch(const std::exception& e) {
@@ -297,50 +258,7 @@ int main(int argc, char** argv) {
     outputFile.close();
     cout << endl << "All data has been successfully saved to " << fileName << "!" << endl;
 
-    //return 0;
-
-	//getting user choice for the algorithm
-	string userChoice;
-	//cout << "Enter algorithm of choice: ";
-	//cin >> userChoice;
-	userChoice = "Dilithium2";
-	cout << "Algorithm of choice " << userChoice << endl;
-	
-	string algorithm = userChoice;
-	string message = "Hello, world!";
-
-	cout << endl;
-
-	cout << "Algorithm: " << algorithm << endl << endl;
-
-	SignatureManager sigmanager(algorithm);
-	sigmanager.generate_keypair();
-
-	cout << "Public key (" << sigmanager.public_key_length << " bytes):" << endl << sigmanager.get_public_key() << endl;
-	cout << endl;
-
-	cout << "Private key (" << sigmanager.private_key_length << " bytes):" << endl << sigmanager.get_private_key() << endl;
-	cout << endl;
-
-	cout << "Signing message \"" << message << "\" to get signature (" << sigmanager.signature_length << " bytes)" << endl;
-
-	unsigned char* signature = sigmanager.sign(message);
-
-	// Print the signature
-	//cout << sigmanager.bytes_to_hex(signature, sigmanager.signature_length) << endl;
-
-	cout << endl;
-
-	cout << "Verifying message and signature: ";
-
-	//message[0]++; // Modify the message to fail verification
-	//signature[0]++; // Modify the signature to fail verification
-
-	bool result = sigmanager.verify(message, signature);
-	if(result) cout << "SUCCESS" << endl;
-	else cout << "FAILED" << endl;
-
-	cout << endl;
+    
 	return 0;
 }
 

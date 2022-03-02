@@ -13,7 +13,7 @@
 using namespace std;
 int main() {
 
-   int LOOP_TIME = 20; //How long do you want each function to run in seconds?
+   int LOOP_TIME = 600; //How long do you want each function to run in seconds?
 
    //these time variables are needed to control loop length
    time_t start_time;
@@ -24,42 +24,43 @@ int main() {
    //hold for ten seconds to let the system stabilize
    sleep(10);
 
-   cout << "BEG KEYGEN ... Time: " << start_time << endl;
+   cout << "BEG KEYGEN... CLEAR DATA " << start_time << endl;
 
    //begin looping through commands that generate private and public key files
    while((end_time - start_time) < LOOP_TIME){
       system("openssl genrsa -out myprivate.pem 1024 > /dev/null 2>&1");
-      //system("openssl rsa -in myprivate.pem -pubout > mypublic.pem > /dev/null 2>&1"); //Doing this creates a blank mypublic.pem file, causing errors down the line
       time(&end_time);
    }
-
-   //hold for ten seconds to let the system stabilize
-   sleep(10);
    
-   system("openssl rsa -in myprivate.pem -pubout > mypublic.pem"); //Cannot surpress output of this command without errors
-   cout << "END KEYGEN ... Time: " << end_time << endl;
+   
+   system("openssl rsa -in myprivate.pem -pubout > mypublic.pem");
+   cout << "END KEYGEN... EXPORT & SAVE FILE " << end_time << endl;
+   
+   //hold for 60 seconds to export and save file
+   sleep(60);	
 
    time(&start_time);
 
-   cout << "BEG SIGN..." << start_time << endl;
+   cout << "BEG SIGN... CLEAR DATA " << start_time << endl;
 
    //create the hash and sign
    while((end_time - start_time) < LOOP_TIME){
       system("openssl dgst -sha1 -sign myprivate.pem -out sha1.sign myfile.txt");
       time(&end_time);
    }
-   cout << "END SIGN..." << end_time << endl;
+   cout << "END SIGN... EXPORT AND SAVE FILE " << end_time << endl;
+
    
-   //hold for ten seconds to let the system stabilize
-   sleep(10);
+   //hold for 60 seconds to export and save file
+   sleep(60);	
    
    time(&start_time);
-   cout << "BEG VERIFY..." << start_time << endl;
+   cout << "BEG VERIFY... CLEAR DATA " << start_time << endl;
    while((end_time - start_time) < LOOP_TIME){
       system("openssl dgst -sha1 -verify mypublic.pem -signature sha1.sign myfile.txt > /dev/null 2>&1");
       time(&end_time);
    }
-   cout << "END VERIFY..." << end_time << endl;
+   cout << "END VERIFY... EXPORT & SAVE FILE " << end_time << endl;
 
 
    return 0;
