@@ -9,17 +9,20 @@
 #include<string.h>
 #include<ctime>
 #include<unistd.h>
+#include<fstream>
 
 using namespace std;
 int main() {
 
-   int LOOP_TIME = 600; //How long do you want each function to run in seconds?
+   int LOOP_TIME = 6; //How long do you want each function to run in seconds?
 
    //these time variables are needed to control loop length
    time_t start_time;
    time_t end_time;
    time(&start_time);
    time(&end_time);
+
+    std::ofstream ("myfile.txt");
    
    //hold for ten seconds to let the system stabilize
    sleep(10);
@@ -28,7 +31,7 @@ int main() {
 
    //begin looping through commands that generate private and public key files
    while((end_time - start_time) < LOOP_TIME){
-      system("openssl genrsa -out myprivate.pem 1024 > /dev/null 2>&1");
+      system("openssl genrsa -out myprivate.pem 4098 > /dev/null 2>&1");
       time(&end_time);
    }
    
@@ -45,7 +48,7 @@ int main() {
 
    //create the hash and sign
    while((end_time - start_time) < LOOP_TIME){
-      system("openssl dgst -sha1 -sign myprivate.pem -out sha1.sign myfile.txt");
+      system("openssl dgst -sha3-256 -sign myprivate.pem -out sha3-256.sign myfile.txt");
       time(&end_time);
    }
    cout << "END SIGN... EXPORT AND SAVE FILE " << end_time << endl;
@@ -57,7 +60,7 @@ int main() {
    time(&start_time);
    cout << "BEG VERIFY... CLEAR DATA " << start_time << endl;
    while((end_time - start_time) < LOOP_TIME){
-      system("openssl dgst -sha1 -verify mypublic.pem -signature sha1.sign myfile.txt > /dev/null 2>&1");
+      system("openssl dgst -sha3-256 -verify mypublic.pem -signature sha3-256.sign myfile.txt > /dev/null 2>&1");
       time(&end_time);
    }
    cout << "END VERIFY... EXPORT & SAVE FILE " << end_time << endl;
