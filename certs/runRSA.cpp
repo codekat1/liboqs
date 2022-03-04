@@ -14,7 +14,7 @@
 using namespace std;
 int main() {
 
-   int LOOP_TIME = 6; //How long do you want each function to run in seconds?
+   int LOOP_TIME = 600; //How long do you want each function to run in seconds?
 
    //these time variables are needed to control loop length
    time_t start_time;
@@ -31,7 +31,7 @@ int main() {
 
    //begin looping through commands that generate private and public key files
    while((end_time - start_time) < LOOP_TIME){
-      system("openssl genrsa -out myprivate.pem 4098 > /dev/null 2>&1");
+      system("openssl genrsa -out myprivate.pem 4096 > /dev/null 2>&1");
       time(&end_time);
    }
    
