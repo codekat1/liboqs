@@ -10,7 +10,7 @@
 using namespace std;
 
 //#define NUMLOOPS 1000000
-#define LOOP_TIME 600
+#define LOOP_TIME 300
 /*
 	algorithm: What algorithm the instance of the class is using
 	public_key_length: Bytes of the public key
