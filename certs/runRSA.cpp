@@ -14,7 +14,7 @@
 using namespace std;
 int main() {
 
-   int LOOP_TIME = 600; //How long do you want each function to run in seconds?
+   int LOOP_TIME = 300; //How long do you want each function to run in seconds?
 
    //these time variables are needed to control loop length
    time_t start_time;
@@ -22,7 +22,7 @@ int main() {
    time(&start_time);
    time(&end_time);
 
-    std::ofstream ("myfile.txt");
+    system("echo Hello World! > myfile.txt");
    
    //hold for ten seconds to let the system stabilize
    sleep(10);
