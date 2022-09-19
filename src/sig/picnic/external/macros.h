@@ -61,19 +61,27 @@
 
 /* Apple version check macro */
 #if defined(__APPLE__)
-  #include <Availability.h>
+#include <Availability.h>
 #define MACOSX_CHECK(maj, min, rev)                                                                \
   (__MAC_OS_X_VERSION_MIN_REQUIRED >= ((maj)*10000 + (min)*100 + (rev)))
 #else
 #define MACOSX_CHECK(maj, min, rev) 0
 #endif
 
-#ifndef MIN
+#if !defined(MIN)
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif
 
-#ifndef MAX
+#if !defined(MAX)
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
+#endif
+
+#if defined(__cplusplus)
+#define PICNIC_BEGIN_C_DECL extern "C" {
+#define PICNIC_END_C_DECL }
+#else
+#define PICNIC_BEGIN_C_DECL
+#define PICNIC_END_C_DECL
 #endif
 
 /* assume */
@@ -112,12 +120,12 @@
 
 /* aligned attribute */
 /* note that C11's alignas will only do the job once DR 444 is implemented */
-#if GNUC_CHECK(4, 9) || __has_attribute(aligned)
+#if GNUC_CHECK(3, 2) || __has_attribute(aligned)
 #define ATTR_ALIGNED(i) __attribute__((aligned((i))))
 #define HAVE_USEFUL_ATTR_ALIGNED
-/* #elif defined(_MSC_VER)
-#define ATTR_ALIGNED(i) __declspec(align((i)))
-#define HAVE_USEFUL_ATTR_ALIGNED */
+#elif defined(_MSC_VER)
+#define ATTR_ALIGNED(i) __declspec(align(i))
+#define HAVE_USEFUL_ATTR_ALIGNED
 #else
 #define ATTR_ALIGNED(i)
 #endif
@@ -171,8 +179,12 @@
 /* target attribute */
 #if defined(__GNUC__) || __has_attribute(target)
 #define ATTR_TARGET(x) __attribute__((target((x))))
+#define ATTR_TARGET_AVX2 __attribute__((target("avx2,bmi2,sse2")))
+#define ATTR_TARGET_SSE2 __attribute__((target("sse2")))
 #else
 #define ATTR_TARGET(x)
+#define ATTR_TARGET_AVX2
+#define ATTR_TARGET_SSE2
 #endif
 
 /* artificial attribute */
@@ -182,120 +194,23 @@
 #define ATTR_ARTIFICIAL
 #endif
 
-#define ATTR_TARGET_AVX2 ATTR_TARGET("avx2,bmi2")
-#define ATTR_TARGET_SSE2 ATTR_TARGET("sse2")
+/* may_alias attribute */
+#if GNUC_CHECK(3, 3) || __has_attribute(__may_alias__)
+#define ATTR_MAY_ALIAS __attribute__((__may_alias__))
+#else
+#define ATTR_MAY_ALIAS
+#endif
 
-#define FN_ATTRIBUTES_AVX2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_AVX2
-#define FN_ATTRIBUTES_SSE2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_SSE2
-#define FN_ATTRIBUTES_NEON ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE
-
-#define FN_ATTRIBUTES_AVX2_PURE FN_ATTRIBUTES_AVX2 ATTR_PURE
-#define FN_ATTRIBUTES_SSE2_PURE FN_ATTRIBUTES_SSE2 ATTR_PURE
-#define FN_ATTRIBUTES_NEON_PURE FN_ATTRIBUTES_NEON ATTR_PURE
-
-#define FN_ATTRIBUTES_AVX2_CONST FN_ATTRIBUTES_AVX2 ATTR_CONST
-#define FN_ATTRIBUTES_SSE2_CONST FN_ATTRIBUTES_SSE2 ATTR_CONST
-#define FN_ATTRIBUTES_NEON_CONST FN_ATTRIBUTES_NEON ATTR_CONST
+/* vector_size attribute */
+#if GNUC_CHECK(4, 8) || __has_attribute(__vector_size__)
+#define ATTR_VECTOR_SIZE(s) __attribute__((__vector_size__(s)))
+#else
+#define ATTR_VECTOR_SIZE(s)
+#endif
 
 /* concatenation */
 #define CONCAT2(a, b) a##_##b
 #define CONCAT(a, b) CONCAT2(a, b)
-
-/* helper macros/functions for checked integer subtraction */
-#if GNUC_CHECK(5, 0) || __has_builtin(__builtin_add_overflow)
-#define sub_overflow_size_t(x, y, diff) __builtin_sub_overflow(x, y, diff)
-#else
-#include <stdbool.h>
-#include <stddef.h>
-
-ATTR_ARTIFICIAL
-static inline bool sub_overflow_size_t(const size_t x, const size_t y, size_t* diff) {
-  *diff = x - y;
-  return x < y;
-}
-#endif
-
-#include <stdint.h>
-
-/* helper functions for parity computations */
-#if GNUC_CHECK(4, 9) || __has_builtin(__builtin_parity)
-ATTR_CONST ATTR_ARTIFICIAL static inline uint8_t parity64_uint8(uint8_t in) {
-  return __builtin_parity(in);
-}
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint16_t parity64_uint16(uint16_t in) {
-  return __builtin_parity(in);
-}
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
-  return __builtin_parityll(in);
-}
-#else
-ATTR_CONST ATTR_ARTIFICIAL static inline uint8_t parity64_uint8(uint8_t in) {
-  /* byte parity from: https://graphics.stanford.edu/~seander/bithacks.html#ParityWith64Bits */
-  return (((in * UINT64_C(0x0101010101010101)) & UINT64_C(0x8040201008040201)) % 0x1FF) & 1;
-}
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint16_t parity64_uint16(uint16_t in) {
-  in ^= in >> 1;
-  in ^= in >> 2;
-  in = (in & 0x1111) * 0x1111;
-  return (in >> 12) & 1;
-}
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
-  in ^= in >> 1;
-  in ^= in >> 2;
-  in = (in & 0x1111111111111111) * 0x1111111111111111;
-  return (in >> 60) & 1;
-}
-#endif
-
-/* helper functions to compute number of leading zeroes */
-#if GNUC_CHECK(4, 7) || __has_builtin(__builtin_clz)
-ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
-  return x ? __builtin_clz(x) : 32;
-}
-#else
-/* Number of leading zeroes of x.
- * From the book
- * H.S. Warren, *Hacker's Delight*, Pearson Education, 2003.
- * http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
- */
-ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
-  if (!x) {
-    return 32;
-  }
-
-  uint32_t n = 1;
-  if (!(x >> 16)) {
-    n = n + 16;
-    x = x << 16;
-  }
-  if (!(x >> 24)) {
-    n = n + 8;
-    x = x << 8;
-  }
-  if (!(x >> 28)) {
-    n = n + 4;
-    x = x << 4;
-  }
-  if (!(x >> 30)) {
-    n = n + 2;
-    x = x << 2;
-  }
-  n = n - (x >> 31);
-
-  return n;
-}
-#endif
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t ceil_log2(uint32_t x) {
-  if (!x) {
-    return 0;
-  }
-  return 32 - clz(x - 1);
-}
 
 #if defined(__WIN32__)
 #define SIZET_FMT "%Iu"
@@ -304,9 +219,9 @@ ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t ceil_log2(uint32_t x) {
 #endif
 
 /* crypto_declassify wrapper */
-#if defined(TIMECOP)
+#if defined(TIMECOP) || defined(SUPERCOP)
 #include "crypto_declassify.h"
-#define picnic_declassify(x, len) crypto_declassify(x, len)
+#define picnic_declassify(x, len) crypto_declassify((void*)x, len)
 #elif defined(WITH_VALGRIND)
 #include <valgrind/memcheck.h>
 #define picnic_declassify(x, len) VALGRIND_MAKE_MEM_DEFINED(x, len)

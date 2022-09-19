@@ -1,11 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0 AND MIT
 
+#if !defined(_WIN32) && !defined(OQS_HAVE_EXPLICIT_BZERO)
+// Request memset_s
+#define __STDC_WANT_LIB_EXT1__ 1
+#endif
+
 #include <oqs/common.h>
 
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+#if !defined(OQS_HAVE_POSIX_MEMALIGN) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_MSC_VER)
+#include <malloc.h>
+#endif
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -70,7 +80,7 @@ static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
 }
-#elif defined(OQS_DIST_ARM64v8_BUILD)
+#elif defined(OQS_DIST_ARM64_V8_BUILD)
 #if defined(__APPLE__)
 #include <sys/sysctl.h>
 static unsigned int macos_feature_detection(const char *feature_name) {
@@ -90,6 +100,31 @@ static void set_available_cpu_extensions(void) {
 	cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = macos_feature_detection("hw.optional.armv8_2_sha3");
 	cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = macos_feature_detection("hw.optional.neon");
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+}
+#elif defined(__FreeBSD__) || defined(__FreeBSD)
+#include <sys/auxv.h>
+#include <machine/elf.h>
+
+static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
+	u_long hwcaps = 0;
+	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+	if (elf_aux_info(AT_HWCAP, &hwcaps, sizeof(u_long))) {
+		fprintf(stderr, "Error getting HWCAP for ARM on FreeBSD\n");
+		return;
+	}
+	if (hwcaps | HWCAP_AES) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
+	}
+	if (hwcaps | HWCAP_ASIMD) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
+	}
+	if (hwcaps | HWCAP_SHA2) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
+	}
+	if (hwcaps | HWCAP_SHA3) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = 1;
+	}
 }
 #else
 #include <sys/auxv.h>
@@ -166,6 +201,10 @@ OQS_API void OQS_init(void) {
 	return;
 }
 
+OQS_API const char *OQS_version(void) {
+	return OQS_VERSION_TEXT;
+}
+
 OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 	/* Assume CHAR_BIT = 8 */
 	uint8_t r = 0;
@@ -181,7 +220,9 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #if defined(_WIN32)
 	SecureZeroMemory(ptr, len);
-#elif defined(HAVE_MEMSET_S)
+#elif defined(OQS_HAVE_EXPLICIT_BZERO)
+	explicit_bzero(ptr, len);
+#elif defined(__STDC_LIB_EXT1__) || defined(OQS_HAVE_MEMSET_S)
 	if (0U < len && memset_s(ptr, (rsize_t)len, 0, (rsize_t)len) != 0) {
 		abort();
 	}
@@ -204,13 +245,16 @@ OQS_API void OQS_MEM_insecure_free(void *ptr) {
 }
 
 void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
-#if defined(__MINGW32__) || defined(__MINGW64__)
-	return __mingw_aligned_malloc(size, alignment);
-#elif defined(_MSC_VER)
-	return _aligned_malloc(size, alignment);
-#elif defined(_ISOC11_SOURCE) // glibc
+#if defined(OQS_HAVE_ALIGNED_ALLOC) // glibc and other implementations providing aligned_alloc
 	return aligned_alloc(alignment, size);
-#elif (defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L) || defined(__APPLE__)
+#else
+	// Check alignment (power of 2, and >= sizeof(void*)) and size (multiple of alignment)
+	if (alignment & (alignment - 1) || size & (alignment - 1) || alignment < sizeof(void *)) {
+		errno = EINVAL;
+		return NULL;
+	}
+
+#if defined(OQS_HAVE_POSIX_MEMALIGN)
 	void *ptr = NULL;
 	const int err = posix_memalign(&ptr, alignment, size);
 	if (err) {
@@ -218,17 +262,63 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 		ptr = NULL;
 	}
 	return ptr;
-#else // musl, maybe others.
-	return aligned_alloc(alignment, size);
+#elif defined(OQS_HAVE_MEMALIGN)
+	return memalign(alignment, size);
+#elif defined(__MINGW32__) || defined(__MINGW64__)
+	return __mingw_aligned_malloc(size, alignment);
+#elif defined(_MSC_VER)
+	return _aligned_malloc(size, alignment);
+#else
+	if (!size) {
+		return NULL;
+	}
+	// Overallocate to be able to align the pointer (alignment -1) and to store
+	// the difference between the pointer returned to the user (ptr) and the
+	// pointer returned by malloc (buffer). The difference is caped to 255 and
+	// can be made larger if necessary, but this should be enough for all users
+	// in liboqs.
+	//
+	// buffer      ptr
+	// ↓           ↓
+	// ...........|...................
+	//            |
+	//       diff = ptr - buffer
+	const size_t offset = alignment - 1 + sizeof(uint8_t);
+	uint8_t *buffer = malloc(size + offset);
+	if (!buffer) {
+		return NULL;
+	}
+
+	// Align the pointer returned to the user.
+	uint8_t *ptr = (uint8_t *)(((uintptr_t)(buffer) + offset) & ~(alignment - 1));
+	ptrdiff_t diff = ptr - buffer;
+	if (diff > UINT8_MAX) {
+		// This should never happen in our code, but just to be safe
+		free(buffer); // IGNORE free-check
+		errno = EINVAL;
+		return NULL;
+	}
+	// Store the difference one byte ahead the returned poitner so that free
+	// can reconstruct buffer.
+	ptr[-1] = diff;
+	return ptr;
+#endif
 #endif
 }
 
 void OQS_MEM_aligned_free(void *ptr) {
-#if defined(__MINGW32__) || defined(__MINGW64__)
+#if defined(OQS_HAVE_ALIGNED_ALLOC) || defined(OQS_HAVE_POSIX_MEMALIGN) || defined(OQS_HAVE_MEMALIGN)
+	free(ptr); // IGNORE free-check
+#elif defined(__MINGW32__) || defined(__MINGW64__)
 	__mingw_aligned_free(ptr);
 #elif defined(_MSC_VER)
 	_aligned_free(ptr);
 #else
-	free(ptr); // IGNORE free-check
+	if (ptr) {
+		// Reconstruct the pointer returned from malloc using the difference
+		// stored one byte ahead of ptr.
+		uint8_t *u8ptr = ptr;
+		free(u8ptr - u8ptr[-1]); // IGNORE free-check
+	}
 #endif
 }

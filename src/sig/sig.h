@@ -72,12 +72,6 @@ extern "C" {
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
 #define OQS_SIG_alg_falcon_1024 "Falcon-1024"
-/** Algorithm identifier for Rainbow-I-Classic */
-#define OQS_SIG_alg_rainbow_I_classic "Rainbow-I-Classic"
-/** Algorithm identifier for Rainbow-I-Circumzenithal */
-#define OQS_SIG_alg_rainbow_I_circumzenithal "Rainbow-I-Circumzenithal"
-/** Algorithm identifier for Rainbow-I-Compressed */
-#define OQS_SIG_alg_rainbow_I_compressed "Rainbow-I-Compressed"
 /** Algorithm identifier for Rainbow-III-Classic */
 #define OQS_SIG_alg_rainbow_III_classic "Rainbow-III-Classic"
 /** Algorithm identifier for Rainbow-III-Circumzenithal */
@@ -166,7 +160,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 65
+#define OQS_SIG_algs_length 62
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -248,7 +242,7 @@ typedef struct OQS_SIG {
 	 * compile-time macros `OQS_SIG_*_length_*`.
 	 *
 	 * @param[out] signature The signature on the message represented as a byte string.
-	 * @param[out] signature_len The length of the signature.
+	 * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
 	 * @param[in] message The message to sign represented as a byte string.
 	 * @param[in] message_len The length of the message to sign.
 	 * @param[in] secret_key The secret key represented as a byte string.

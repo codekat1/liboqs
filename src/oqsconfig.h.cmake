@@ -5,13 +5,18 @@
 #cmakedefine OQS_DIST_BUILD 1
 #cmakedefine OQS_DIST_X86_64_BUILD 1
 #cmakedefine OQS_DIST_X86_BUILD 1
-#cmakedefine OQS_DIST_ARM64v8_BUILD 1
-#cmakedefine OQS_DIST_ARM32v7_BUILD 1
+#cmakedefine OQS_DIST_ARM64_V8_BUILD 1
+#cmakedefine OQS_DIST_ARM32_V7_BUILD 1
 #cmakedefine OQS_DIST_PPC64LE_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1
 #cmakedefine ARCH_X86_64 1
 #cmakedefine ARCH_ARM64v8 1
 #cmakedefine ARCH_ARM32v7 1
+#cmakedefine BUILD_SHARED_LIBS 1
+#cmakedefine OQS_BUILD_ONLY_LIB 1
+#cmakedefine OQS_OPT_TARGET "@OQS_OPT_TARGET@"
+#cmakedefine USE_SANITIZER "@USE_SANITIZER@"
+#cmakedefine CMAKE_BUILD_TYPE "@CMAKE_BUILD_TYPE@"
 
 #cmakedefine OQS_USE_OPENSSL 1
 #cmakedefine OQS_USE_AES_OPENSSL 1
@@ -56,26 +61,6 @@
 #cmakedefine OQS_ENABLE_KEM_frodokem_976_shake 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_aes 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_shake 1
-
-#cmakedefine OQS_ENABLE_KEM_SIDH 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p434 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p434_compressed 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p503 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p503_compressed 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p610 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p610_compressed 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p751 1
-#cmakedefine OQS_ENABLE_KEM_sidh_p751_compressed 1
-
-#cmakedefine OQS_ENABLE_KEM_SIKE 1
-#cmakedefine OQS_ENABLE_KEM_sike_p434 1
-#cmakedefine OQS_ENABLE_KEM_sike_p434_compressed 1
-#cmakedefine OQS_ENABLE_KEM_sike_p503 1
-#cmakedefine OQS_ENABLE_KEM_sike_p503_compressed 1
-#cmakedefine OQS_ENABLE_KEM_sike_p610 1
-#cmakedefine OQS_ENABLE_KEM_sike_p610_compressed 1
-#cmakedefine OQS_ENABLE_KEM_sike_p751 1
-#cmakedefine OQS_ENABLE_KEM_sike_p751_compressed 1
 
 #cmakedefine OQS_ENABLE_SIG_PICNIC 1
 #cmakedefine OQS_ENABLE_SIG_picnic_L1_UR 1
@@ -184,10 +169,13 @@
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2_avx2 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_2_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_3 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_3_avx2 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_3_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_5 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_5_avx2 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_5_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2_aes 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2_aes_avx2 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_3_aes 1
@@ -202,9 +190,6 @@
 #cmakedefine OQS_ENABLE_SIG_falcon_1024_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_RAINBOW 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_I_classic 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_I_circumzenithal 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_I_compressed 1
 #cmakedefine OQS_ENABLE_SIG_rainbow_III_classic 1
 #cmakedefine OQS_ENABLE_SIG_rainbow_III_circumzenithal 1
 #cmakedefine OQS_ENABLE_SIG_rainbow_III_compressed 1

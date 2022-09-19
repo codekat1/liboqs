@@ -47,7 +47,6 @@ Details on each supported algorithm can be found in the [docs/algorithms](https:
 - **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-821, NTRU-HPS-4096-1229, NTRU-HRSS-701, NTRU-HRSS-1373
 - **NTRU-Prime**: ntrulpr653, ntrulpr761, ntrulpr857, ntrulpr1277, sntrup653, sntrup761, sntrup857, sntrup1277
 - **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
-- **SIKE**: SIDH-p434, SIDH-p434-compressed, SIDH-p503, SIDH-p503-compressed, SIDH-p610, SIDH-p610-compressed, SIDH-p751, SIDH-p751-compressed, SIKE-p434, SIKE-p434-compressed, SIKE-p503, SIKE-p503-compressed, SIKE-p610, SIKE-p610-compressed, SIKE-p751, SIKE-p751-compressed
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->
 
 #### Signature schemes
@@ -56,7 +55,7 @@ Details on each supported algorithm can be found in the [docs/algorithms](https:
 - **CRYSTALS-Dilithium**: Dilithium2, Dilithium3, Dilithium5, Dilithium2-AES, Dilithium3-AES, Dilithium5-AES
 - **Falcon**: Falcon-512, Falcon-1024
 - **Picnic**: picnic\_L1\_FS, picnic\_L1\_UR, picnic\_L1\_full, picnic\_L3\_FS, picnic\_L3\_UR, picnic\_L3\_full, picnic\_L5\_FS, picnic\_L5\_UR, picnic\_L5\_full, picnic3\_L1, picnic3\_L3, picnic3\_L5
-- **Rainbow**: Rainbow-I-Classic, Rainbow-I-Circumzenithal, Rainbow-I-Compressed, Rainbow-III-Classic†, Rainbow-III-Circumzenithal†, Rainbow-III-Compressed†, Rainbow-V-Classic†, Rainbow-V-Circumzenithal†, Rainbow-V-Compressed†
+- **Rainbow**: Rainbow-III-Classic†, Rainbow-III-Circumzenithal†, Rainbow-III-Compressed†, Rainbow-V-Classic†, Rainbow-V-Circumzenithal†, Rainbow-V-Compressed†
 - **SPHINCS+-Haraka**: SPHINCS+-Haraka-128f-robust, SPHINCS+-Haraka-128f-simple, SPHINCS+-Haraka-128s-robust, SPHINCS+-Haraka-128s-simple, SPHINCS+-Haraka-192f-robust, SPHINCS+-Haraka-192f-simple, SPHINCS+-Haraka-192s-robust, SPHINCS+-Haraka-192s-simple, SPHINCS+-Haraka-256f-robust, SPHINCS+-Haraka-256f-simple, SPHINCS+-Haraka-256s-robust, SPHINCS+-Haraka-256s-simple
 - **SPHINCS+-SHA256**: SPHINCS+-SHA256-128f-robust, SPHINCS+-SHA256-128f-simple, SPHINCS+-SHA256-128s-robust, SPHINCS+-SHA256-128s-simple, SPHINCS+-SHA256-192f-robust, SPHINCS+-SHA256-192f-simple, SPHINCS+-SHA256-192s-robust, SPHINCS+-SHA256-192s-simple, SPHINCS+-SHA256-256f-robust, SPHINCS+-SHA256-256f-simple, SPHINCS+-SHA256-256s-robust, SPHINCS+-SHA256-256s-simple
 - **SPHINCS+-SHAKE256**: SPHINCS+-SHAKE256-128f-robust, SPHINCS+-SHAKE256-128f-simple, SPHINCS+-SHAKE256-128s-robust, SPHINCS+-SHAKE256-128s-simple, SPHINCS+-SHAKE256-192f-robust, SPHINCS+-SHAKE256-192f-simple, SPHINCS+-SHAKE256-192s-robust, SPHINCS+-SHAKE256-192s-simple, SPHINCS+-SHAKE256-256f-robust, SPHINCS+-SHAKE256-256f-simple, SPHINCS+-SHAKE256-256s-robust, SPHINCS+-SHAKE256-256s-simple
@@ -82,11 +81,11 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 	On Ubuntu:
 
-		 sudo apt install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml
+		 sudo apt install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-		brew install cmake ninja openssl@1.1 wget doxygen graphviz astyle
+		brew install cmake ninja openssl@1.1 wget doxygen graphviz astyle valgrind
 		pip3 install pytest pytest-xdist pyyaml
 
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL version 1.1.1 or higher.
@@ -102,11 +101,11 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 		cmake -GNinja ..
 		ninja
 
-Various `cmake` build options to customize the resultant artifacts are available and are [documented in the project Wiki](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs). All supported options are also listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory.
+Various `cmake` build options to customize the resultant artifacts are available and are [documented in CONFIGURE.md](CONFIGURE.md). All supported options are also listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory.
 
 The following instructions assume we are in `build`.
 
-3. By default the main build result is `lib/liboqs.a`, a static library. If you want to build a shared/dynamic library, append [`-DBUILD_SHARED_LIBS=ON`](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs#build_shared_libs) to the `cmake -GNinja ..` command above and the result will be `lib/liboqs.so|dylib|dll`. The public headers are located in the `include` directory. There are also a variety of programs built under the `tests` directory:
+3. By default the main build result is `lib/liboqs.a`, a static library. If you want to build a shared/dynamic library, append [`-DBUILD_SHARED_LIBS=ON`](CONFIGURE.md#build_shared_libs) to the `cmake -GNinja ..` command above and the result will be `lib/liboqs.so|dylib|dll`. The public headers are located in the `include` directory. There are also a variety of programs built under the `tests` directory:
 
 	- `test_kem`: Simple test harness for key encapsulation mechanisms
 	- `test_sig`: Simple test harness for key signature schemes
@@ -166,6 +165,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/common/crypto/sha3/xkcp_low` : CC0 (public domain), except `brg_endian.h` and `KeccakP-1600-AVX2.s`
 - `src/common/crypto/sha3/xkcp_low/.../brg_endian.h` : BSD 3-Clause License
 - `src/common/crypto/sha3/xkcp_low/.../KeccakP-1600-AVX2.s` : BSD-like [CRYPTOGAMS license](http://www.openssl.org/~appro/cryptogams/)
+- `src/common/rand/rand_nist.c`: See file
 - `src/kem/bike/additional`: Apache License v2.0
 - `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqclean_*`: public domain
@@ -177,7 +177,8 @@ liboqs includes some third party libraries or modules that are licensed differen
 
 ## Acknowledgements
 
-Various companies, including Amazon Web Services, Cisco Systems, evolutionQ, IBM Research, and Microsoft Research have dedicated programmer time to contribute source code to OQS. [Various people](CONTRIBUTORS) have contributed source code to liboqs.
+Various companies, including Amazon Web Services, Cisco Systems, evolutionQ, IBM Research, and Microsoft Research have dedicated programmer time to contribute source code to OQS. [Various people](https://github.com/open-quantum-safe/liboqs/blob/main/CONTRIBUTORS) have contributed source code to liboqs.
 
-Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Canadian Centre for Cyber Security.
+Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services, the Canadian Centre for Cyber Security, the Unitary Fund, the NGI Assure Fund, and VeriSign Inc.
+
 Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.

@@ -29,8 +29,13 @@ static OQS_STATUS speed_aes128(uint64_t duration, size_t message_len) {
 	void *schedule = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	ciphertext = malloc(message_len);
-	if ((message == NULL) || (ciphertext == NULL)) {
+	if (ciphertext == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}
@@ -53,11 +58,17 @@ static OQS_STATUS speed_aes128(uint64_t duration, size_t message_len) {
 static OQS_STATUS speed_aes256(uint64_t duration, size_t message_len) {
 	uint8_t *message = NULL;
 	uint8_t *ciphertext = NULL;
+	uint8_t nonce[12] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 	void *schedule = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	ciphertext = malloc(message_len);
-	if ((message == NULL) || (ciphertext == NULL)) {
+	if (ciphertext == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}
@@ -72,7 +83,19 @@ static OQS_STATUS speed_aes256(uint64_t duration, size_t message_len) {
 	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc(message, message_len, test_aes256_key, ciphertext), "OQS_AES256_ECB_enc", duration);
 	OQS_AES256_free_schedule(schedule);
 
+	TIME_OPERATION_SECONDS({ OQS_AES256_CTR_inc_init(test_aes256_key, &schedule); OQS_AES256_CTR_inc_iv(nonce, 12, schedule); OQS_AES256_free_schedule(schedule); }, "OQS_AES256_CTR_init+iv+free", duration);
+
+	OQS_AES256_CTR_inc_init(test_aes256_key, &schedule);
+	OQS_AES256_CTR_inc_iv(nonce, 12, schedule);
+
+	TIME_OPERATION_SECONDS(OQS_AES256_CTR_inc_stream_iv(nonce, 12, schedule, ciphertext, message_len), "OQS_AES256_CTR_inc_stream_iv", duration);
+
+	TIME_OPERATION_SECONDS(OQS_AES256_CTR_inc_stream_blks(schedule, ciphertext, message_len / 16), "OQS_AES256_CTR_inc_stream_blks", duration);
+
+	OQS_AES256_free_schedule(schedule);
+
 	OQS_MEM_insecure_free(message);
+	OQS_MEM_insecure_free(ciphertext);
 
 	return OQS_SUCCESS;
 }
@@ -171,8 +194,13 @@ static OQS_STATUS speed_shake128(uint64_t duration, size_t message_len, size_t o
 	uint8_t *output = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	output = malloc(output_len);
-	if ((message == NULL) || (output == NULL)) {
+	if (output == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}
@@ -193,8 +221,13 @@ static OQS_STATUS speed_shake256(uint64_t duration, size_t message_len, size_t o
 	uint8_t *output = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	output = malloc(output_len);
-	if ((message == NULL) || (output == NULL)) {
+	if (output == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}

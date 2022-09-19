@@ -23,7 +23,7 @@ else()
       set(AES_IMPL ${AES_IMPL} aes/aes128_ni.c)
       set(AES_IMPL ${AES_IMPL} aes/aes256_ni.c)
       set_source_files_properties(aes/aes128_ni.c PROPERTIES COMPILE_FLAGS -maes)
-      set_source_files_properties(aes/aes256_ni.c PROPERTIES COMPILE_FLAGS -maes)
+      set_source_files_properties(aes/aes256_ni.c PROPERTIES COMPILE_FLAGS "-maes -mssse3")
    elseif (OQS_USE_ARM_AES_INSTRUCTIONS)
       set(AES_IMPL ${AES_IMPL} aes/aes128_armv8.c)
       set(AES_IMPL ${AES_IMPL} aes/aes256_armv8.c)
@@ -34,12 +34,15 @@ if(${OQS_USE_SHA2_OPENSSL})
     set(SHA2_IMPL sha2/sha2_ossl.c)
 else()
     set(SHA2_IMPL sha2/sha2.c sha2/sha2_c.c)
-    if (OQS_DIST_ARM64v8_BUILD)
+    if (OQS_DIST_ARM64_V8_BUILD)
        set(SHA2_IMPL ${SHA2_IMPL} sha2/sha2_ni.c)
        set_source_files_properties(sha2/sha2_ni.c PROPERTIES COMPILE_FLAGS -mcpu=cortex-a53+crypto)
     elseif (OQS_USE_ARM_SHA2_INSTRUCTIONS)
        # Assume we are compiling native
        set(SHA2_IMPL ${SHA2_IMPL} sha2/sha2_ni.c)
+       if ((CMAKE_SYSTEM_NAME MATCHES "Darwin") AND (${CMAKE_C_COMPILER_ID} STREQUAL "GNU"))
+         set_source_files_properties(sha2/sha2_ni.c PROPERTIES COMPILE_FLAGS -march=armv8-a+crypto)
+       endif()
     endif()
 endif()
 
@@ -67,6 +70,35 @@ else()
     if(${CMAKE_HAVE_GETENTROPY})
         target_compile_definitions(common PRIVATE OQS_HAVE_GETENTROPY)
     endif()
+endif()
+
+# check available functions to perform aligned mallocs
+check_symbol_exists(aligned_alloc stdlib.h CMAKE_HAVE_ALIGNED_ALLOC)
+check_symbol_exists(posix_memalign stdlib.h CMAKE_HAVE_POSIX_MEMALIGN)
+check_symbol_exists(memalign malloc.h CMAKE_HAVE_MEMALIGN)
+
+if(CMAKE_HAVE_ALIGNED_ALLOC)
+    target_compile_definitions(common PRIVATE OQS_HAVE_ALIGNED_ALLOC)
+endif()
+
+if(CMAKE_HAVE_POSIX_MEMALIGN)
+    target_compile_definitions(common PRIVATE OQS_HAVE_POSIX_MEMALIGN)
+endif()
+
+if(CMAKE_HAVE_MEMALIGN)
+    target_compile_definitions(common PRIVATE OQS_HAVE_MEMALIGN)
+endif()
+
+# check if explicit_bzero exists or memset_s
+check_symbol_exists(explicit_bzero string.h CMAKE_HAVE_EXPLICIT_BZERO)
+check_symbol_exists(memset_s string.h CMAKE_HAVE_MEMSET_S)
+
+if(CMAKE_HAVE_EXPLICIT_BZERO)
+    target_compile_definitions(common PRIVATE OQS_HAVE_EXPLICIT_BZERO)
+endif()
+
+if(CMAKE_HAVE_MEMSET_S)
+    target_compile_definitions(common PRIVATE OQS_HAVE_MEMSET_S)
 endif()
 
 if(NOT ${OQS_USE_SHA3_OPENSSL}) # using XKCP

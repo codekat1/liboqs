@@ -12,30 +12,19 @@
 #ifndef MZD_ADDITIONAL_H
 #define MZD_ADDITIONAL_H
 
-#include "macros.h"
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
+#include "macros.h"
+#include "compat.h"
+
+PICNIC_BEGIN_C_DECL
+
 typedef uint64_t word;
 #define WORD_C(v) UINT64_C(v)
 
-#if defined(WITH_OPT)
-#include "simd.h"
-#endif
-
-typedef union {
-  word w64[4];
-#if defined(WITH_OPT)
-#if defined(WITH_SSE2) || defined(WITH_NEON)
-  word128 w128[2];
-#endif
-#if defined(WITH_AVX2)
-  word256 w256;
-#endif
-#endif
-} block_t ATTR_ALIGNED(32);
+typedef ATTR_ALIGNED(32) struct { word w64[4]; } block_t;
 
 /**
  * Representation of matrices and vectors
@@ -43,7 +32,7 @@ typedef union {
  * The basic memory unit is a block of 256 bit. Each row is stored in (possible multiple) blocks
  * depending on the number of columns. Matrices with up to 128 columns are the only exception. In
  * this case, a block actually contains two rows. The row with even index is contained in w64[0] and
- * w61[1], the row with odd index is contained in w64[2] and w64[3].
+ * w64[1], the row with odd index is contained in w64[2] and w64[3].
  */
 typedef block_t mzd_local_t;
 
@@ -51,7 +40,9 @@ mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) ATTR_
 
 #define mzd_local_init(r, c) mzd_local_init_ex(r, c, true)
 
-void mzd_local_free(mzd_local_t* v);
+static inline void mzd_local_free(mzd_local_t* v) {
+  picnic_aligned_free(v);
+}
 
 void mzd_copy_uint64_128(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
 void mzd_copy_uint64_192(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
@@ -106,14 +97,6 @@ void mzd_and_uint64_192(mzd_local_t* res, mzd_local_t const* first,
                         mzd_local_t const* second) ATTR_NONNULL;
 void mzd_and_uint64_256(mzd_local_t* res, mzd_local_t const* first,
                         mzd_local_t const* second) ATTR_NONNULL;
-void mzd_and_s128_128(mzd_local_t* res, mzd_local_t const* first,
-                      mzd_local_t const* second) ATTR_NONNULL;
-void mzd_and_s128_256(mzd_local_t* res, mzd_local_t const* first,
-                      mzd_local_t const* second) ATTR_NONNULL;
-void mzd_and_s256_128(mzd_local_t* res, mzd_local_t const* first,
-                      mzd_local_t const* second) ATTR_NONNULL;
-void mzd_and_s256_256(mzd_local_t* res, mzd_local_t const* first,
-                      mzd_local_t const* second) ATTR_NONNULL;
 
 /**
  * shifts and rotations
@@ -209,6 +192,9 @@ void mzd_mul_v_parity_uint64_192_30(mzd_local_t* c, mzd_local_t const* v,
 void mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t const* v,
                                     mzd_local_t const* A) ATTR_NONNULL;
 
+void mzd_mul_v_parity_s256_256_30(mzd_local_t* c, mzd_local_t const* v,
+                                  mzd_local_t const* A) ATTR_NONNULL;
+
 /**
  * Compute c + v * A optimized for c and v being vectors.
  */
@@ -241,5 +227,7 @@ void mzd_shuffle_pext_256_30(mzd_local_t* x, const word mask) ATTR_NONNULL;
 
 #define BLOCK(v, b) ((block_t*)ASSUME_ALIGNED(&(v)[(b)], 32))
 #define CONST_BLOCK(v, b) ((const block_t*)ASSUME_ALIGNED(&(v)[(b)], 32))
+
+PICNIC_END_C_DECL
 
 #endif

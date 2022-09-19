@@ -3,30 +3,28 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: 6a32796212b79a5f9126d0a933e1216313f50c16
+    git_commit: 4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: ['pqclean-sphincs.patch', 'pqclean-kyber-armneon-shake.patch', 'pqclean-saber-armneon-shake.patch']
+    patches: [pqclean-sphincs.patch, pqclean-kyber-armneon-shake.patch, pqclean-saber-armneon-shake.patch, pqclean-saber-kyber-arm-macos-gcc-fix.patch, pqclean-dilithium-arm-randomized-signing.patch]
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
     git_branch: master
-    git_commit: faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2
+    git_commit: 8e00ec73035147d18b27d06048dff322f8de1f29
     kem_meta_path: '{pretty_name_full}_META.yml'
-    common_meta_path: 'Common_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake.patch, pqcrystals-kyber-avx2-shake.patch]
+    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
     git_commit: 61b51a71701b8ae9f546a1e5d220e1950ed20d06
     sig_meta_path: '{pretty_name_full}_META.yml'
-    common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake.patch, pqcrystals-dilithium-avx2-shake.patch]
+    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
 kems:
   -
     name: classic_mceliece
@@ -93,10 +91,10 @@ kems:
   -
     name: kyber
     default_implementation: ref
-    arch_specific_implementations: 
+    arch_specific_implementations:
                                       aarch64: aarch64
     upstream_location: pqcrystals-kyber
-    arch_specific_upstream_locations: 
+    arch_specific_upstream_locations:
                                       aarch64: pqclean
     schemes:
       -
@@ -211,6 +209,10 @@ sigs:
     name: dilithium
     default_implementation: ref
     upstream_location: pqcrystals-dilithium
+    arch_specific_implementations:
+                                      aarch64: aarch64
+    arch_specific_upstream_locations:
+                                      aarch64: pqclean
     schemes:
       -
         scheme: "2"
@@ -224,22 +226,22 @@ sigs:
         signed_msg_order: sig_then_msg
       -
         scheme: "5"
-        pqclean_scheme: dilithium_5
+        pqclean_scheme: dilithium5
         pretty_name_full: Dilithium5
         signed_msg_order: sig_then_msg
       -
         scheme: "2_aes"
-        pqclean_scheme: dilithium2-aes
+        pqclean_scheme: dilithium2aes
         pretty_name_full: Dilithium2-AES
         signed_msg_order: sig_then_msg
       -
         scheme: "3_aes"
-        pqclean_scheme: dilithium3-aes
+        pqclean_scheme: dilithium3aes
         pretty_name_full: Dilithium3-AES
         signed_msg_order: sig_then_msg
       -
         scheme: "5_aes"
-        pqclean_scheme: dilithium_5-aes
+        pqclean_scheme: dilithium5aes
         pretty_name_full: Dilithium5-AES
         signed_msg_order: sig_then_msg
   -
@@ -262,21 +264,6 @@ sigs:
     default_implementation: clean
     upstream_location: pqclean
     schemes:
-      -
-        scheme: "I_classic"
-        pqclean_scheme: rainbowI-classic
-        pretty_name_full: Rainbow-I-Classic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "I_circumzenithal"
-        pqclean_scheme: rainbowI-circumzenithal
-        pretty_name_full: Rainbow-I-Circumzenithal
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "I_compressed"
-        pqclean_scheme: rainbowI-compressed
-        pretty_name_full: Rainbow-I-Compressed
-        signed_msg_order: msg_then_sig
       -
         scheme: "III_classic"
         pqclean_scheme: rainbowIII-classic

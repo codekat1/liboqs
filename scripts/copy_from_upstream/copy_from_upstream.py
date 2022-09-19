@@ -255,7 +255,7 @@ def load_instructions():
                             family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
                         else:
                             family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
-    # TODO *should* work, but sigs with multiple upstreams are currently not supported... Coming soon.
+    
     for family in instructions['sigs']:
         family['type'] = 'sig'
         family['pqclean_type'] = 'sign'
@@ -279,7 +279,7 @@ def load_instructions():
                                                        upstreams[scheme['upstream_location']][
                                                            'sig_meta_path'].format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
-                    if 'extras' not in scheme['kem_meta_paths']:
+                    if 'extras' not in scheme['sig_meta_paths']:
                         scheme['sig_meta_paths']['extras'] = {}
 
                     for arch in family['arch_specific_upstream_locations']:
@@ -289,14 +289,28 @@ def load_instructions():
             metadata = {}
             if not 'metadata' in scheme:
                 metadata = yaml.safe_load(file_get_contents(scheme['sig_meta_paths']['default']))
+                imps_to_remove = []
+                upstream = upstreams[scheme['upstream_location']]
                 for imp in metadata['implementations']:
-                    imp['upstream'] = upstreams[scheme['upstream_location']]
+                    if 'ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) in upstream['ignore']:
+                        imps_to_remove.append(imp['name'])
+                    else:
+                        imp['upstream'] = upstream
+                for imp_name in imps_to_remove:
+                    for i in range(len(metadata['implementations'])):
+                        if metadata['implementations'][i]['name'] == imp_name:
+                            del metadata['implementations'][i]
+                            break
+
                 if 'extras' in scheme['sig_meta_paths']:
                     for arch in scheme['sig_meta_paths']['extras']:
                         implementations = yaml.safe_load(file_get_contents(scheme['sig_meta_paths']['extras'][arch]))['implementations']
                         for imp in implementations:
-                            if arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']:
-                                imp['upstream'] = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                            not in upstream['ignore'])):
+                                imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
                                 break
             scheme['metadata'] = metadata
@@ -521,12 +535,13 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     try:
                         for i in range(len(impl['supported_platforms'])):
                             req = impl['supported_platforms'][i]
-                            # if compiling for ARM64_V8 the asimd is implied and will cause errors
-                            # when provided to the compiler, so we need to remove it
+                            # if compiling for ARM64_V8, asimd/neon is implied and will cause errors
+                            # when provided to the compiler; OQS uses the term ARM_NEON
                             if req['architecture'] == 'arm_8':
                                 req['architecture'] = 'ARM64_V8'
                             if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
                                 req['required_flags'].remove('asimd')
+                                req['required_flags'].append('arm_neon')
                             impl['required_flags'] = req['required_flags']
                             family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
@@ -600,6 +615,7 @@ def copy_from_upstream():
             json.dump(kats[t], f, indent=2, sort_keys=True)
     if not keepdata:
         shutil.rmtree('repos')
+
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
     # Not in love with using sub process to call a python script, but this is the easiest solution for 
@@ -679,11 +695,10 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
-non_upstream_lengths['kem'] = count_non_upstream_algs('kem', ['bike', 'frodokem', 'sike'])
+non_upstream_lengths['kem'] = count_non_upstream_algs('kem', ['bike', 'frodokem'])
 non_upstream_lengths['sig'] = count_non_upstream_algs('sig', ['picnic'])
 
 if args.operation == "copy":
     copy_from_upstream()
 elif args.operation == "verify":
     verify_from_upstream()
-

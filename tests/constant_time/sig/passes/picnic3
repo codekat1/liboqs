@@ -44,32 +44,39 @@
 {
    conditional on unitialized value (hash context init in commit)
    Memcheck:Cond
-   fun:KeccakP1600_AddLanes
-   fun:KeccakP1600_AddBytes
+   ...
    fun:keccak_inc_absorb
    fun:OQS_SHA3_shake*_inc_absorb
    fun:hash_update
-   src:picnic3_impl.c:107 # fun:commit
+   src:picnic3_impl.c:106 # fun:commit
    fun:sign_picnic3
 }
 {
    use of unitialized value (hash context init in commit)
    Memcheck:Value8
-   fun:KeccakP1600_AddLanes
-   fun:KeccakP1600_AddBytes
+   ...
    fun:keccak_inc_absorb
    fun:OQS_SHA3_shake*_inc_absorb
    fun:hash_update
-   src:picnic3_impl.c:107 # fun:commit
+   src:picnic3_impl.c:106 # fun:commit
+   fun:sign_picnic3
+}
+{
+   conditional on unitialized value (hash context init in commit)
+   Memcheck:Cond
+   ...
+   fun:OQS_SHA3_shake*_inc_absorb
+   fun:hash_update
+   src:picnic3_impl.c:109 # fun:commit
    fun:sign_picnic3
 }
 {
    use of unitialized value (hash context init in commit)
    Memcheck:Value8
-   fun:KeccakP1600_AddBytes
+   ...
    fun:OQS_SHA3_shake*_inc_absorb
    fun:hash_update
-   src:picnic3_impl.c:107 # fun:commit
+   src:picnic3_impl.c:109 # fun:commit
    fun:sign_picnic3
 }
 {
@@ -156,4 +163,103 @@
    fun:sign_picnic3
    fun:oqs_sig_picnic_impl_sign_picnic3
    fun:oqs_sig_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Cond
+   fun:oqs_sig_picnic_getLeaf
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+ }
+ {
+   Variable is initialized
+   Memcheck:Value8
+   fun:KeccakP1600_AddLanes
+   fun:KeccakP1600_AddBytes
+   fun:keccak_inc_absorb
+   fun:OQS_SHA3_shake256_inc_absorb
+   fun:hash_update
+   fun:commit
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Cond
+   fun:KeccakP1600_AddLanes
+   fun:KeccakP1600_AddBytes
+   fun:keccak_inc_absorb
+   fun:OQS_SHA3_shake256_inc_absorb
+   fun:hash_update
+   fun:commit
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Cond
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Value8
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Cond
+   fun:indexOf
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Cond
+   fun:contains
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Value8
+   fun:KeccakP1600_AddLanes
+   fun:KeccakP1600_AddBytes
+   fun:keccak_inc_absorb
+   fun:OQS_SHA3_shake128_inc_absorb
+   fun:hash_update
+   fun:commit
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
+{
+   Variable is initialized
+   Memcheck:Cond
+   fun:KeccakP1600_AddLanes
+   fun:KeccakP1600_AddBytes
+   fun:keccak_inc_absorb
+   fun:OQS_SHA3_shake128_inc_absorb
+   fun:hash_update
+   fun:commit
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
 }

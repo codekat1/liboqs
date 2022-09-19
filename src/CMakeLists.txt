@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: MIT
 
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
 add_subdirectory(common)
 
 # initialize KEM|SIG_OBJS for --warn-uninitialized
@@ -13,10 +16,6 @@ endif()
 if(${OQS_ENABLE_KEM_FRODOKEM})
     add_subdirectory(kem/frodokem)
     set(KEM_OBJS ${KEM_OBJS} ${FRODOKEM_OBJS})
-endif()
-if(${OQS_ENABLE_KEM_SIKE} OR ${OQS_ENABLE_KEM_SIDH})
-    add_subdirectory(kem/sike)
-    set(KEM_OBJS ${KEM_OBJS} $<TARGET_OBJECTS:sike>)
 endif()
 if(${OQS_ENABLE_SIG_PICNIC})
     add_subdirectory(sig/picnic)
@@ -75,29 +74,63 @@ if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
 endif()
 if(${OQS_USE_OPENSSL})
-    target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
-    target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})
+    target_link_libraries(oqs PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
+endif()
+if(IOS)
+    find_library(IOS_SECURITY Security)
+    target_link_libraries(oqs PUBLIC ${IOS_SECURITY})
 endif()
 
+target_include_directories(oqs
+                           PUBLIC
+                           "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+)
 set_target_properties(oqs
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     VERSION ${OQS_VERSION_TEXT}
-    SOVERSION 0
+    SOVERSION 2
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-install(TARGETS oqs EXPORT liboqsConfig
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include)
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfig.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/liboqs
+)
 
-install(EXPORT liboqsConfig
+# generate the version file for the config file
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfigVersion.cmake"
+  VERSION "${OQS_VERSION_TEXT}"
+  COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES
+          "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfig.cmake"
+          "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfigVersion.cmake"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/liboqs"
+)
+
+install(TARGETS oqs
+        EXPORT liboqsTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/oqs
+)
+
+install(EXPORT liboqsTargets
+        FILE liboqsTargets.cmake
         NAMESPACE OQS::
-        DESTINATION lib/cmake/liboqs
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/liboqs
 )
 
 install(FILES ${PUBLIC_HEADERS}
-        DESTINATION include/oqs)
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/oqs)
+
+export(EXPORT liboqsTargets
+       FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/liboqsTargets.cmake"
+       NAMESPACE OQS::
+)

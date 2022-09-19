@@ -11,6 +11,22 @@
 # If OQS_OPT_TARGET=auto we target the current CPU.
 # If OQS_OPT_TARGET=generic we target a generic CPU.
 # Otherwise we target the specified CPU.
+
+include(CheckCCompilerFlag)
+check_c_compiler_flag("-Wa,--noexecstack" CC_SUPPORTS_WA_NOEXECSTACK)
+
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.18")
+    include(CheckLinkerFlag)
+    check_linker_flag(C "-Wl,-z,noexecstack" LD_SUPPORTS_WL_Z_NOEXECSTACK)
+elseif(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14")
+    set(TMP_TESTDIR "${CMAKE_BINARY_DIR}/test_noexecstack")
+    file(WRITE "${TMP_TESTDIR}/test.c" "int main() { return 0; }\n")
+    try_compile(LD_SUPPORTS_WL_Z_NOEXECSTACK "${TMP_TESTDIR}" "${TMP_TESTDIR}/test.c" LINK_OPTIONS "-Wl,-z,noexecstack")
+else()
+    message(WARNING "Unable to check if '-Wl,-z,noexecstack' is supported.")
+    set(LD_SUPPORTS_WL_Z_NOEXECSTACK FALSE)
+endif()
+
 set(OQS_OPT_FLAG "")
 if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     if(${OQS_DIST_BUILD})
@@ -67,6 +83,12 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wextra)
     add_compile_options(-Wpedantic)
     add_compile_options(-Wno-unused-command-line-argument)
+    if(CC_SUPPORTS_WA_NOEXECSTACK)
+        add_compile_options("-Wa,--noexecstack")
+    endif()
+    if(LD_SUPPORTS_WL_Z_NOEXECSTACK)
+        add_link_options("-Wl,-z,noexecstack")
+    endif()
 
     if(NOT ${OQS_BUILD_ONLY_LIB})
         set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -117,6 +139,14 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wformat=2)
     add_compile_options(-Wfloat-equal)
     add_compile_options(-Wwrite-strings)
+    if (NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        if(CC_SUPPORTS_WA_NOEXECSTACK)
+            add_compile_options("-Wa,--noexecstack")
+        endif()
+        if(LD_SUPPORTS_WL_Z_NOEXECSTACK)
+            add_link_options("-Wl,-z,noexecstack")
+        endif()
+    endif()
 
     if(NOT ${OQS_BUILD_ONLY_LIB})
         set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -137,6 +167,12 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
         else ()
             add_compile_options(-Wl,--gc-sections)
         endif ()
+    endif()
+
+    # workaround for gcc issues on ARM32 as per https://github.com/open-quantum-safe/liboqs/issues/1288
+    if(ARCH_ARM32v7 AND (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "11.0.0"))
+        add_compile_options(-fno-ipa-modref)
+        add_compile_options(-fno-ipa-pure-const)
     endif()
 
 elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
