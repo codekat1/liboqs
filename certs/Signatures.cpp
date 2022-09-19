@@ -10,7 +10,7 @@
 using namespace std;
 
 //#define NUMLOOPS 1000000
-#define LOOP_TIME 300
+#define LOOP_TIME 5
 /*
 	algorithm: What algorithm the instance of the class is using
 	public_key_length: Bytes of the public key
@@ -161,7 +161,7 @@ string benchmarkLog(string algorithm, int n) {
 		time_t end_time;
 	
 		//hold for ten seconds to let the system stabilize
-		sleep(10);
+		//sleep(10);
 
 		time(&start_time);
 		time(&end_time);
@@ -175,7 +175,7 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "END KEYGEN... EXPORT & SAVE FILE " << end_time << endl;
 		
 		//hold for 60 seconds to export and save file
-		sleep(60);	
+		//sleep(60);	
 			
 		time(&start_time);
 		cout << "BEG SIGN... CLEAR DATA " << start_time << endl;
@@ -187,7 +187,7 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "END SIGN... EXPORT SAVE FILE " << end_time << endl;
 
 		//hold for 60 seconds to export and save file
-		sleep(60);
+		//sleep(60);
 		
 		time(&start_time);
 		cout << "BEG VERIFY... CLEAR DATA " << start_time << endl;
@@ -238,7 +238,8 @@ int main(int argc, char** argv) {
 		//"Dilithium3"//, 
 		//"Dilithium5"//,
 		//"Falcon-512"//,
-		"Falcon-1024"
+		//"Falcon-1024"
+		"SPHINCS+-Haraka-192s-simple"
 	};
 	const int numberOfAlgorithms = sizeof(availAlgs) / sizeof(availAlgs[0]);
     
