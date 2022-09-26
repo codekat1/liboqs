@@ -25,14 +25,14 @@ int main() {
    double elapsed_time = 0;
    double avg_time = 0;
    int count = 0;
-
-   //hold for ten seconds to let the system stabilize
-   sleep(10);
    
    system("echo Hello World! > myfile.txt");
 
    cout << "/////////////////// Running RSA4096..." << endl;
    
+   //hold for ten seconds to let the system stabilize
+   sleep(10);
+
    time(&start_time);
    time(&end_time);
 
@@ -58,8 +58,8 @@ int main() {
    
    system("openssl rsa -in myprivate.pem -pubout > mypublic.pem");
    
-   //hold for 5 seconds to let the system stablize
-   sleep(5);	
+   //let the system stablize
+   sleep(10);	
 
    time(&start_time);
 
@@ -84,8 +84,8 @@ int main() {
    cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;;
 
    
-   //hold for 5 seconds to let the system stablize
-   sleep(5);	
+   //let the system stablize
+   sleep(10);	
    
    time(&start_time);
 
