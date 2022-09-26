@@ -194,8 +194,8 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;
 		
 		//END KEYGEN
-		//let systsem stablize for 5 seconds
-		sleep(5);
+		//let systsem stablize
+		sleep(10);
 		
 		//BEGIN SIGN
 
@@ -223,7 +223,7 @@ string benchmarkLog(string algorithm, int n) {
 
 		//END SIGN
 		//let systsem stablize for 5 seconds
-		sleep(5);
+		sleep(10);
 		
 		//BEGIN VERIFY
 		
@@ -310,7 +310,7 @@ int main(int argc, char** argv) {
     }
 
     outputFile.close();
-    cout << endl << "All data has been successfully saved to " << fileName << "!" << endl;
+    //cout << endl << "All data has been successfully saved to " << fileName << "!" << endl;
 
     
 	return 0;
