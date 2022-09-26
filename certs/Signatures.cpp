@@ -6,10 +6,11 @@
 #include <stdio.h>
 #include <oqs/oqs.h>
 #include <unistd.h>
+#include <chrono>
 
 using namespace std;
 
-//#define NUMLOOPS 1000000
+
 #define LOOP_TIME 5
 /*
 	algorithm: What algorithm the instance of the class is using
@@ -159,45 +160,95 @@ string benchmarkLog(string algorithm, int n) {
 
 		time_t start_time;
 		time_t end_time;
+		auto func_start = std::chrono::steady_clock::now();
+		auto func_end = std::chrono::steady_clock::now();
+		double elapsed_time = 0;
+		double avg_time = 0;
+		int count = 0;
 	
 		//hold for ten seconds to let the system stabilize
-		//sleep(10);
+		sleep(10);
 
-		time(&start_time);
+		//BEGIN KEYGEN
+
 		time(&end_time);
+		time(&start_time);
 		
+		cout << "/////// Beginning key generation function: " << endl;
+		cout << "/////// Start time (sec): " << start_time << endl;
 		
-		cout << "BEG KEYGEN... CLEAR DATA " << start_time << endl;
 		while((end_time - start_time) < LOOP_TIME){
+			func_start = std::chrono::steady_clock::now();
 			sigmanager.generate_keypair();
+			func_end = std::chrono::steady_clock::now();
+			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
+			if(count == 0) {avg_time = elapsed_time;}
+			else
+				avg_time = (elapsed_time + avg_time) / count;
+			count++;
 			time(&end_time);
 		}
-		cout << "END KEYGEN... EXPORT & SAVE FILE " << end_time << endl;
+
+		cout << "/////// End time (sec): " << end_time << endl;
+		cout << "/////// Average length of time for 1 run of key generation: " << avg_time << " microseconds" << endl;
+		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;
 		
-		//hold for 60 seconds to export and save file
-		//sleep(60);	
-			
+		//END KEYGEN
+		//let systsem stablize for 5 seconds
+		sleep(5);
+		
+		//BEGIN SIGN
+
 		time(&start_time);
-		cout << "BEG SIGN... CLEAR DATA " << start_time << endl;
+
+		cout << "/////// Beginning signing function: " << endl;
+		cout << "/////// Start time (sec): " << start_time << endl;
 
 		while((end_time - start_time) < LOOP_TIME){
+			func_start = std::chrono::steady_clock::now();
 			signature = sigmanager.sign(message);
+			func_end = std::chrono::steady_clock::now();
+			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
+			if(count == 0) {avg_time = elapsed_time;}
+			else
+				avg_time = (elapsed_time + avg_time) / count;
+			count++;
 			time(&end_time);
 		}
-		cout << "END SIGN... EXPORT SAVE FILE " << end_time << endl;
 
-		//hold for 60 seconds to export and save file
-		//sleep(60);
+		cout << "/////// End time (sec): " << end_time << endl;
+		cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
+		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;;
+
+
+		//END SIGN
+		//let systsem stablize for 5 seconds
+		sleep(5);
+		
+		//BEGIN VERIFY
 		
 		time(&start_time);
-		cout << "BEG VERIFY... CLEAR DATA " << start_time << endl;
+
+		cout << "/////// Beginning verify function: " << endl;
+		cout << "/////// Start time (sec): " << start_time << endl;
 
 		while((end_time - start_time) < LOOP_TIME){
+			func_start = std::chrono::steady_clock::now();
 			result = sigmanager.verify(message, signature);
+			func_end = std::chrono::steady_clock::now();
+			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
+			if(count == 0) {avg_time = elapsed_time;}
+			else
+				avg_time = (elapsed_time + avg_time) / count;
+			count++;
 			time(&end_time);
 		}
-		cout << "END VERIFY... EXPORT & SAVE FILE " << end_time << endl;
-		
+
+		cout << "/////// End time (sec): " << end_time << endl;
+		cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
+		cout << "/////// Number of times function was run: " << count << endl << endl;
+
+		//END VERIFY
 	}
 
 
@@ -234,18 +285,20 @@ int main(int argc, char** argv) {
 	
 	
 	const char *availAlgs[] = {
-		//"Dilithium2"//,
-		//"Dilithium3"//, 
-		//"Dilithium5"//,
-		//"Falcon-512"//,
-		//"Falcon-1024"
-		"SPHINCS+-Haraka-192s-simple"
+		"Dilithium2",
+		"Dilithium3", 
+		"Dilithium5",
+		"Falcon-512",
+		"Falcon-1024",
+		"SPHINCS+-SHA256-128s-robust",
+		"SPHINCS+-SHA256-192s-robust",
+		"SPHINCS+-SHA256-256s-robust"
 	};
 	const int numberOfAlgorithms = sizeof(availAlgs) / sizeof(availAlgs[0]);
     
     for (int i = 0; i < numberOfAlgorithms; i++) {
 		string algorithm = availAlgs[i];
-		cout << "Running " << algorithm << endl;
+		cout << "/////////////////////// Running " << algorithm << endl << "///////" << endl;
     	try {
 			//cout << "Progress: " << (100 * (i + 1) / float(numberOfAlgorithms)) << "%" << endl;
 			string row = benchmarkLog(algorithm, numSamples);
