@@ -15,7 +15,7 @@
 using namespace std;
 int main() {
 
-   int LOOP_TIME = 5; //How long do you want each function to run in seconds?
+   int LOOP_TIME = 120; //How long do you want each function to run in seconds?
 
    //these time variables are needed to control loop length
    time_t start_time;
@@ -23,8 +23,9 @@ int main() {
    auto func_start = std::chrono::steady_clock::now();
    auto func_end = std::chrono::steady_clock::now();
    double elapsed_time = 0;
+   double total_time = 0;
    double avg_time = 0;
-   int count = 0;
+   int count = 1;
    
    system("echo Hello World! > myfile.txt");
 
@@ -45,16 +46,19 @@ int main() {
       system("openssl genrsa -out myprivate.pem 4096 > /dev/null 2>&1");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
-      if(count == 0) {avg_time = elapsed_time;}
-      else
-         avg_time = (elapsed_time + avg_time) / count;
+      total_time = total_time + elapsed_time;
       count++;
       time(&end_time);
    }
    
+   avg_time = total_time / count;
    cout << "/////// End time (sec): " << end_time << endl;
    cout << "/////// Average length of time for 1 run of key generation: " << avg_time << " microseconds" << endl;
    cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;
+   
+   count = 1;
+   total_time = 0;
+   avg_time = 0;
    
    system("openssl rsa -in myprivate.pem -pubout > mypublic.pem");
    
@@ -72,17 +76,19 @@ int main() {
       system("openssl dgst -sha3-256 -sign myprivate.pem -out sha3-256.sign myfile.txt");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
-      if(count == 0) {avg_time = elapsed_time;}
-      else
-         avg_time = (elapsed_time + avg_time) / count;
+      total_time = total_time + elapsed_time;
       count++;
       time(&end_time);
    }
-
+   
+   avg_time = total_time / count;
    cout << "/////// End time (sec): " << end_time << endl;
    cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
    cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;;
 
+   count = 1;
+   total_time = 0;
+   avg_time = 0;
    
    //let the system stablize
    sleep(10);	
@@ -98,11 +104,12 @@ int main() {
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
       if(count == 0) {avg_time = elapsed_time;}
-      else
-         avg_time = (elapsed_time + avg_time) / count;
+      total_time = total_time + elapsed_time;
       count++;
       time(&end_time);
    }
+   
+   avg_time = total_time / count;
    
    cout << "/////// End time (sec): " << end_time << endl;
    cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
@@ -110,6 +117,9 @@ int main() {
 
    //END VERIFY
 
+   count = 1;
+   total_time = 0;
+   avg_time = 0;
 
    return 0;
 }
