@@ -11,7 +11,7 @@
 using namespace std;
 
 
-#define LOOP_TIME 5
+#define LOOP_TIME 120
 /*
 	algorithm: What algorithm the instance of the class is using
 	public_key_length: Bytes of the public key
@@ -163,8 +163,9 @@ string benchmarkLog(string algorithm, int n) {
 		auto func_start = std::chrono::steady_clock::now();
 		auto func_end = std::chrono::steady_clock::now();
 		double elapsed_time = 0;
+		double total_time = 0;
 		double avg_time = 0;
-		int count = 0;
+		int count = 1;
 	
 		//hold for ten seconds to let the system stabilize
 		sleep(10);
@@ -182,16 +183,19 @@ string benchmarkLog(string algorithm, int n) {
 			sigmanager.generate_keypair();
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
-			if(count == 0) {avg_time = elapsed_time;}
-			else
-				avg_time = (elapsed_time + avg_time) / count;
+			total_time = total_time + elapsed_time;
 			count++;
 			time(&end_time);
 		}
+		avg_time = total_time / count;
 
 		cout << "/////// End time (sec): " << end_time << endl;
 		cout << "/////// Average length of time for 1 run of key generation: " << avg_time << " microseconds" << endl;
 		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;
+		
+		count = 1;
+		total_time = 0;
+		avg_time = 0;
 		
 		//END KEYGEN
 		//let systsem stablize
@@ -209,17 +213,19 @@ string benchmarkLog(string algorithm, int n) {
 			signature = sigmanager.sign(message);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
-			if(count == 0) {avg_time = elapsed_time;}
-			else
-				avg_time = (elapsed_time + avg_time) / count;
+			total_time = total_time + elapsed_time;
 			count++;
 			time(&end_time);
 		}
-
+		avg_time = total_time / count;
+		
 		cout << "/////// End time (sec): " << end_time << endl;
 		cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
 		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;;
 
+		count = 1;
+		total_time = 0;
+		avg_time = 0;
 
 		//END SIGN
 		//let systsem stablize for 5 seconds
@@ -237,18 +243,21 @@ string benchmarkLog(string algorithm, int n) {
 			result = sigmanager.verify(message, signature);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
-			if(count == 0) {avg_time = elapsed_time;}
-			else
-				avg_time = (elapsed_time + avg_time) / count;
+			total_time = total_time + elapsed_time;
 			count++;
 			time(&end_time);
 		}
 
+		avg_time = total_time / count;
 		cout << "/////// End time (sec): " << end_time << endl;
 		cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
 		cout << "/////// Number of times function was run: " << count << endl << endl;
 
 		//END VERIFY
+		
+		count = 1;
+		total_time = 0;
+		avg_time = 0;
 	}
 
 
@@ -290,9 +299,9 @@ int main(int argc, char** argv) {
 		"Dilithium5",
 		"Falcon-512",
 		"Falcon-1024",
-		"SPHINCS+-SHA256-128s-robust",
-		"SPHINCS+-SHA256-192s-robust",
-		"SPHINCS+-SHA256-256s-robust"
+		"SPHINCS+-SHAKE256-128s-robust",
+		"SPHINCS+-SHAKE256-192s-robust",
+		"SPHINCS+-SHAKE256-256s-robust"
 	};
 	const int numberOfAlgorithms = sizeof(availAlgs) / sizeof(availAlgs[0]);
     
