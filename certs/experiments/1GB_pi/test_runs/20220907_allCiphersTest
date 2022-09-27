@@ -1,0 +1,179 @@
+/////////////////////// Running Dilithium2
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664227932
+/////// End time (sec): 1664228052
+/////// Average length of time for 1 run of key generation: 0.0705122 microseconds
+/////// Number of times function was run: 41314
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664228062
+/////// End time (sec): 1664228182
+/////// Average length of time for 1 run of sign: 0.194367 microseconds
+/////// Number of times function was run: 57151
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664228192
+/////// End time (sec): 1664228312
+/////// Average length of time for 1 run of sign: 0.0271636 microseconds
+/////// Number of times function was run: 100909
+
+/////////////////////// Running Dilithium3
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664228322
+/////// End time (sec): 1664228442
+/////// Average length of time for 1 run of key generation: 0.211285 microseconds
+/////// Number of times function was run: 23785
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664228452
+/////// End time (sec): 1664228572
+/////// Average length of time for 1 run of sign: 0.303138 microseconds
+/////// Number of times function was run: 33739
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664228582
+/////// End time (sec): 1664228702
+/////// Average length of time for 1 run of sign: 0.0791156 microseconds
+/////// Number of times function was run: 59295
+
+/////////////////////// Running Dilithium5
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664228712
+/////// End time (sec): 1664228832
+/////// Average length of time for 1 run of key generation: 0.59458 microseconds
+/////// Number of times function was run: 14170
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664228842
+/////// End time (sec): 1664228962
+/////// Average length of time for 1 run of sign: 0.641594 microseconds
+/////// Number of times function was run: 21765
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664228972
+/////// End time (sec): 1664229092
+/////// Average length of time for 1 run of sign: 0.224684 microseconds
+/////// Number of times function was run: 36471
+
+/////////////////////// Running Falcon-512
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664229102
+/////// End time (sec): 1664229222
+/////// Average length of time for 1 run of key generation: 318.326 microseconds
+/////// Number of times function was run: 731
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664229232
+/////// End time (sec): 1664229352
+/////// Average length of time for 1 run of sign: 6.87398 microseconds
+/////// Number of times function was run: 4557
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664229362
+/////// End time (sec): 1664229482
+/////// Average length of time for 1 run of sign: 6.24242e-05 microseconds
+/////// Number of times function was run: 1377672
+
+/////////////////////// Running Falcon-1024
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664229492
+/////// End time (sec): 1664229612
+/////// Average length of time for 1 run of key generation: 1542.34 microseconds
+/////// Number of times function was run: 282
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664229622
+/////// End time (sec): 1664229742
+/////// Average length of time for 1 run of sign: 33.4867 microseconds
+/////// Number of times function was run: 2038
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664229752
+/////// End time (sec): 1664229872
+/////// Average length of time for 1 run of sign: 0.000285906 microseconds
+/////// Number of times function was run: 647068
+
+/////////////////////// Running SPHINCS+-SHAKE256-128s-robust
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664229882
+/////// End time (sec): 1664230005
+/////// Average length of time for 1 run of key generation: 2.00675e+06 microseconds
+/////// Number of times function was run: 9
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664230015
+/////// End time (sec): 1664230221
+/////// Average length of time for 1 run of sign: 1.14603e+07 microseconds
+/////// Number of times function was run: 11
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664230231
+/////// End time (sec): 1664230351
+/////// Average length of time for 1 run of sign: 101.759 microseconds
+/////// Number of times function was run: 1092
+
+/////////////////////// Running SPHINCS+-SHAKE256-192s-robust
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664230361
+/////// End time (sec): 1664230482
+/////// Average length of time for 1 run of key generation: 5.8814e+06 microseconds
+/////// Number of times function was run: 6
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664230492
+/////// End time (sec): 1664230667
+/////// Average length of time for 1 run of sign: 3.02772e+07 microseconds
+/////// Number of times function was run: 7
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664230677
+/////// End time (sec): 1664230797
+/////// Average length of time for 1 run of sign: 194.719 microseconds
+/////// Number of times function was run: 787
+
+/////////////////////// Running SPHINCS+-SHAKE256-256s-robust
+///////
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664230807
+/////// End time (sec): 1664230940
+/////// Average length of time for 1 run of key generation: 1.69328e+06 microseconds
+/////// Number of times function was run: 10
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664230950
+/////// End time (sec): 1664231101
+/////// Average length of time for 1 run of sign: 1.52945e+07 microseconds
+/////// Number of times function was run: 11
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664231111
+/////// End time (sec): 1664231231
+/////// Average length of time for 1 run of sign: 399.734 microseconds
+/////// Number of times function was run: 554
+
+/////////////////// Running RSA4096...
+/////// Beginning key generation function: 
+/////// Start time (sec): 1664231243
+/////// End time (sec): 1664231364
+/////// Average length of time for 1 run of key generation: 8.61182e+06 microseconds
+/////// Number of times function was run: 5
+///////
+/////// Beginning signing function: 
+/////// Start time (sec): 1664231374
+/////// End time (sec): 1664231494
+/////// Average length of time for 1 run of sign: 454.54 microseconds
+/////// Number of times function was run: 518
+///////
+/////// Beginning verify function: 
+/////// Start time (sec): 1664231504
+/////// End time (sec): 1664231624
+/////// Average length of time for 1 run of sign: 7.46922 microseconds
+/////// Number of times function was run: 4942
+
