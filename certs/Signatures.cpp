@@ -299,9 +299,9 @@ int main(int argc, char** argv) {
 		"Dilithium5",
 		"Falcon-512",
 		"Falcon-1024",
-		"SPHINCS+-SHAKE256-128s-robust",
-		"SPHINCS+-SHAKE256-192s-robust",
-		"SPHINCS+-SHAKE256-256s-robust"
+		"SPHINCS+-SHA256-128s-robust",
+		"SPHINCS+-SHA256-192s-robust",
+		"SPHINCS+-SHA256-256s-robust"
 	};
 	const int numberOfAlgorithms = sizeof(availAlgs) / sizeof(availAlgs[0]);
     
