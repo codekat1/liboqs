@@ -15,7 +15,7 @@
 using namespace std;
 int main() {
 
-   int LOOP_TIME = 120; //How long do you want each function to run in seconds?
+   int LOOP_TIME = 30; //How long do you want each function to run in seconds?
 
    //these time variables are needed to control loop length
    time_t start_time;
@@ -26,6 +26,13 @@ int main() {
    double total_time = 0;
    double avg_time = 0;
    int count = 1;
+   string fileName_1 = "RSA_keygenTime.csv";
+   string fileName_2 = "RSA_signTime.csv";
+   string fileName_3 = "RSA_verifyTime.csv";
+   ofstream outputFile1;
+   ofstream outputFile2;
+   ofstream outputFile3;
+   outputFile1.open(fileName_1);
    
    system("echo Hello World! > myfile.txt");
 
@@ -46,6 +53,7 @@ int main() {
       system("openssl genrsa -out myprivate.pem 4096 > /dev/null 2>&1");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
+      outputFile1 << elapsed_time << endl;
       total_time = total_time + elapsed_time;
       count++;
       time(&end_time);
@@ -59,7 +67,9 @@ int main() {
    count = 1;
    total_time = 0;
    avg_time = 0;
-   
+   outputFile1.close();
+   outputFile2.open(fileName_2);
+
    system("openssl rsa -in myprivate.pem -pubout > mypublic.pem");
    
    //let the system stablize
@@ -76,6 +86,7 @@ int main() {
       system("openssl dgst -sha3-256 -sign myprivate.pem -out sha3-256.sign myfile.txt");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
+      outputFile2 << elapsed_time << endl;
       total_time = total_time + elapsed_time;
       count++;
       time(&end_time);
@@ -89,6 +100,8 @@ int main() {
    count = 1;
    total_time = 0;
    avg_time = 0;
+   outputFile2.close();
+   outputFile3.open(fileName_3);
    
    //let the system stablize
    sleep(10);	
@@ -103,7 +116,7 @@ int main() {
       system("openssl dgst -sha3-256 -verify mypublic.pem -signature sha3-256.sign myfile.txt > /dev/null 2>&1");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
-      if(count == 0) {avg_time = elapsed_time;}
+      outputFile3 << elapsed_time << endl;
       total_time = total_time + elapsed_time;
       count++;
       time(&end_time);
@@ -120,6 +133,7 @@ int main() {
    count = 1;
    total_time = 0;
    avg_time = 0;
+   outputFile3.close();
 
    return 0;
 }
