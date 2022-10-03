@@ -11,7 +11,7 @@
 using namespace std;
 
 
-#define LOOP_TIME 120
+#define LOOP_TIME 30
 /*
 	algorithm: What algorithm the instance of the class is using
 	public_key_length: Bytes of the public key
