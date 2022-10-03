@@ -150,6 +150,7 @@ string benchmarkLog(string algorithm, int n) {
 	double clocks_keypair_generation = 0;
 	double clocks_signing = 0;
 	double clocks_verifying = 0;
+
 	for(int i = 0; i < n; i++) {
 
 		unsigned char* signature;
@@ -166,6 +167,13 @@ string benchmarkLog(string algorithm, int n) {
 		double total_time = 0;
 		double avg_time = 0;
 		int count = 1;
+		string fileName_1 = algorithm + "_keygenTime.csv";
+		string fileName_2 = algorithm + "_signTime.csv";
+		string fileName_3 = algorithm + "_verifyTime.csv";
+		ofstream outputFile1;
+		ofstream outputFile2;
+		ofstream outputFile3;
+		outputFile1.open(fileName_1);
 	
 		//hold for ten seconds to let the system stabilize
 		sleep(10);
@@ -184,9 +192,11 @@ string benchmarkLog(string algorithm, int n) {
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
 			total_time = total_time + elapsed_time;
+			outputFile1 << elapsed_time << endl;
 			count++;
 			time(&end_time);
 		}
+
 		avg_time = total_time / count;
 
 		cout << "/////// End time (sec): " << end_time << endl;
@@ -196,6 +206,8 @@ string benchmarkLog(string algorithm, int n) {
 		count = 1;
 		total_time = 0;
 		avg_time = 0;
+		outputFile1.close();
+		outputFile2.open(fileName_2);
 		
 		//END KEYGEN
 		//let systsem stablize
@@ -213,6 +225,7 @@ string benchmarkLog(string algorithm, int n) {
 			signature = sigmanager.sign(message);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
+			outputFile2 << elapsed_time << endl;
 			total_time = total_time + elapsed_time;
 			count++;
 			time(&end_time);
@@ -226,6 +239,8 @@ string benchmarkLog(string algorithm, int n) {
 		count = 1;
 		total_time = 0;
 		avg_time = 0;
+		outputFile2.close();
+		outputFile3.open(fileName_3);
 
 		//END SIGN
 		//let systsem stablize for 5 seconds
@@ -243,6 +258,7 @@ string benchmarkLog(string algorithm, int n) {
 			result = sigmanager.verify(message, signature);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
+			outputFile3 << elapsed_time << endl;
 			total_time = total_time + elapsed_time;
 			count++;
 			time(&end_time);
@@ -258,6 +274,7 @@ string benchmarkLog(string algorithm, int n) {
 		count = 1;
 		total_time = 0;
 		avg_time = 0;
+		outputFile3.close();
 	}
 
 
