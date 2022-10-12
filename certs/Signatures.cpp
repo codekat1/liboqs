@@ -11,7 +11,7 @@
 using namespace std;
 
 
-#define LOOP_TIME 30
+#define LOOP_TIME 10
 /*
 	algorithm: What algorithm the instance of the class is using
 	public_key_length: Bytes of the public key
@@ -166,13 +166,14 @@ string benchmarkLog(string algorithm, int n) {
 		double elapsed_time = 0;
 		double total_time = 0;
 		double avg_time = 0;
-		int count = 1;
-		string fileName_1 = algorithm + "_keygenTime.csv";
-		string fileName_2 = algorithm + "_signTime.csv";
-		string fileName_3 = algorithm + "_verifyTime.csv";
+		int count = 0;
+		string fileName_1 = "outputFiles/" + algorithm + "_keygenTime.csv";
+		string fileName_2 = "outputFiles/" + algorithm + "_signTime.csv";
+		string fileName_3 = "outputFiles/" + algorithm + "_verifyTime.csv";
 		ofstream outputFile1;
 		ofstream outputFile2;
 		ofstream outputFile3;
+		
 		outputFile1.open(fileName_1);
 	
 		//hold for ten seconds to let the system stabilize
@@ -187,13 +188,13 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "/////// Start time (sec): " << start_time << endl;
 		
 		while((end_time - start_time) < LOOP_TIME){
+			count++;
 			func_start = std::chrono::steady_clock::now();
 			sigmanager.generate_keypair();
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
 			total_time = total_time + elapsed_time;
 			outputFile1 << elapsed_time << endl;
-			count++;
 			time(&end_time);
 		}
 
@@ -203,7 +204,7 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "/////// Average length of time for 1 run of key generation: " << avg_time << " microseconds" << endl;
 		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;
 		
-		count = 1;
+		count = 0;
 		total_time = 0;
 		avg_time = 0;
 		outputFile1.close();
@@ -221,13 +222,13 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "/////// Start time (sec): " << start_time << endl;
 
 		while((end_time - start_time) < LOOP_TIME){
+			count++;
 			func_start = std::chrono::steady_clock::now();
 			signature = sigmanager.sign(message);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
 			outputFile2 << elapsed_time << endl;
 			total_time = total_time + elapsed_time;
-			count++;
 			time(&end_time);
 		}
 		avg_time = total_time / count;
@@ -236,7 +237,7 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
 		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;;
 
-		count = 1;
+		count = 0;
 		total_time = 0;
 		avg_time = 0;
 		outputFile2.close();
@@ -254,13 +255,13 @@ string benchmarkLog(string algorithm, int n) {
 		cout << "/////// Start time (sec): " << start_time << endl;
 
 		while((end_time - start_time) < LOOP_TIME){
+			count++;
 			func_start = std::chrono::steady_clock::now();
 			result = sigmanager.verify(message, signature);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
 			outputFile3 << elapsed_time << endl;
 			total_time = total_time + elapsed_time;
-			count++;
 			time(&end_time);
 		}
 
@@ -271,7 +272,7 @@ string benchmarkLog(string algorithm, int n) {
 
 		//END VERIFY
 		
-		count = 1;
+		count = 0;
 		total_time = 0;
 		avg_time = 0;
 		outputFile3.close();
