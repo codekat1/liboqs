@@ -11,7 +11,7 @@
 using namespace std;
 
 
-#define LOOP_TIME 10
+#define samples 1
 /*
 	algorithm: What algorithm the instance of the class is using
 	public_key_length: Bytes of the public key
@@ -159,20 +159,19 @@ string benchmarkLog(string algorithm, int n) {
 
     	SignatureManager sigmanager(algorithm);
 
-		time_t start_time;
-		time_t end_time;
+    	auto loop_start = std::chrono::steady_clock::now();
+    	auto loop_end = std::chrono::steady_clock::now();
 		auto func_start = std::chrono::steady_clock::now();
 		auto func_end = std::chrono::steady_clock::now();
+		double loop_time = 0;
 		double elapsed_time = 0;
-		double total_time = 0;
-		double avg_time = 0;
-		int count = 0;
 		string fileName_1 = "outputFiles/" + algorithm + "_keygenTime.csv";
 		string fileName_2 = "outputFiles/" + algorithm + "_signTime.csv";
 		string fileName_3 = "outputFiles/" + algorithm + "_verifyTime.csv";
 		ofstream outputFile1;
 		ofstream outputFile2;
 		ofstream outputFile3;
+		int count = 0;
 		
 		outputFile1.open(fileName_1);
 	
@@ -180,33 +179,23 @@ string benchmarkLog(string algorithm, int n) {
 		sleep(10);
 
 		//BEGIN KEYGEN
-
-		time(&end_time);
-		time(&start_time);
 		
 		cout << "/////// Beginning key generation function: " << endl;
-		cout << "/////// Start time (sec): " << start_time << endl;
 		
-		while((end_time - start_time) < LOOP_TIME){
+		loop_start = std::chrono::steady_clock::now();
+		while(count < samples){
 			count++;
 			func_start = std::chrono::steady_clock::now();
 			sigmanager.generate_keypair();
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
-			total_time = total_time + elapsed_time;
 			outputFile1 << elapsed_time << endl;
-			time(&end_time);
 		}
-
-		avg_time = total_time / count;
-
-		cout << "/////// End time (sec): " << end_time << endl;
-		cout << "/////// Average length of time for 1 run of key generation: " << avg_time << " microseconds" << endl;
-		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;
+		loop_end = std::chrono::steady_clock::now();
 		
+		cout << "/////// " << algorithm << " took " << double (std::chrono::duration_cast <std::chrono::microseconds> (loop_end - loop_start).count()) << " microseconds to run key gen " << samples << " times." << endl;
+
 		count = 0;
-		total_time = 0;
-		avg_time = 0;
 		outputFile1.close();
 		outputFile2.open(fileName_2);
 		
@@ -216,30 +205,22 @@ string benchmarkLog(string algorithm, int n) {
 		
 		//BEGIN SIGN
 
-		time(&start_time);
-
 		cout << "/////// Beginning signing function: " << endl;
-		cout << "/////// Start time (sec): " << start_time << endl;
 
-		while((end_time - start_time) < LOOP_TIME){
+		loop_start = std::chrono::steady_clock::now();
+		while(count < samples){
 			count++;
 			func_start = std::chrono::steady_clock::now();
 			signature = sigmanager.sign(message);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
 			outputFile2 << elapsed_time << endl;
-			total_time = total_time + elapsed_time;
-			time(&end_time);
 		}
-		avg_time = total_time / count;
+		loop_end = std::chrono::steady_clock::now();
 		
-		cout << "/////// End time (sec): " << end_time << endl;
-		cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
-		cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;;
+		cout << "/////// " << algorithm << " took " << double (std::chrono::duration_cast <std::chrono::microseconds> (loop_end - loop_start).count()) << " microseconds to run sign " << samples << " times." << endl;
 
 		count = 0;
-		total_time = 0;
-		avg_time = 0;
 		outputFile2.close();
 		outputFile3.open(fileName_3);
 
@@ -249,36 +230,27 @@ string benchmarkLog(string algorithm, int n) {
 		
 		//BEGIN VERIFY
 		
-		time(&start_time);
-
 		cout << "/////// Beginning verify function: " << endl;
-		cout << "/////// Start time (sec): " << start_time << endl;
 
-		while((end_time - start_time) < LOOP_TIME){
+		loop_start = std::chrono::steady_clock::now();
+		while(count < samples){
 			count++;
 			func_start = std::chrono::steady_clock::now();
 			result = sigmanager.verify(message, signature);
 			func_end = std::chrono::steady_clock::now();
 			double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
 			outputFile3 << elapsed_time << endl;
-			total_time = total_time + elapsed_time;
-			time(&end_time);
 		}
+		loop_end = std::chrono::steady_clock::now();
 
-		avg_time = total_time / count;
-		cout << "/////// End time (sec): " << end_time << endl;
-		cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
-		cout << "/////// Number of times function was run: " << count << endl << endl;
+		cout << "/////// " << algorithm << " took " << double (std::chrono::duration_cast <std::chrono::microseconds> (loop_end - loop_start).count()) << " microseconds to run sign " << samples << " times." << endl;
+
 
 		//END VERIFY
 		
-		count = 0;
-		total_time = 0;
-		avg_time = 0;
+		count++;
 		outputFile3.close();
 	}
-
-
 
 	// Used to quickly grab the key and signature lengths
     SignatureManager sigmanager(algorithm);
