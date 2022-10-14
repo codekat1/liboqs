@@ -15,17 +15,16 @@
 using namespace std;
 int main() {
 
-   int LOOP_TIME = 10; //How long do you want each function to run in seconds?
+   int samples = 1; //How long do you want each function to run in seconds?
 
    //these time variables are needed to control loop length
-   time_t start_time;
-   time_t end_time;
+   
+   auto loop_start = std::chrono::steady_clock::now();
+   auto loop_end = std::chrono::steady_clock::now();
    auto func_start = std::chrono::steady_clock::now();
    auto func_end = std::chrono::steady_clock::now();
+   double loop_time = 0;
    double elapsed_time = 0;
-   double total_time = 0;
-   double avg_time = 0;
-   int count = 0;
    string fileName_1 = "outputFiles/RSA_keygenTime.csv";
    string fileName_2 = "outputFiles/RSA_signTime.csv";
    string fileName_3 = "outputFiles/RSA_verifyTime.csv";
@@ -33,6 +32,7 @@ int main() {
    ofstream outputFile2;
    ofstream outputFile3;
    outputFile1.open(fileName_1);
+   int count = 0;
    
    system("echo Hello World! > myfile.txt");
 
@@ -41,32 +41,23 @@ int main() {
    //hold for ten seconds to let the system stabilize
    sleep(10);
 
-   time(&start_time);
-   time(&end_time);
-
    cout << "/////// Beginning key generation function: " << endl;
-   cout << "/////// Start time (sec): " << start_time << endl;
 
    //begin looping through commands that generate private and public key files
-   while((end_time - start_time) < LOOP_TIME){
+   loop_start = std::chrono::steady_clock::now();
+   while(count < samples){
       count++;
       func_start = std::chrono::steady_clock::now();
       system("openssl genrsa -out myprivate.pem 4096 > /dev/null 2>&1");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
       outputFile1 << elapsed_time << endl;
-      total_time = total_time + elapsed_time;
-      time(&end_time);
    }
-   
-   avg_time = total_time / count;
-   cout << "/////// End time (sec): " << end_time << endl;
-   cout << "/////// Average length of time for 1 run of key generation: " << avg_time << " microseconds" << endl;
-   cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;
-   
+   loop_end = std::chrono::steady_clock::now();
+
+   cout << "/////// RSA took " << double (std::chrono::duration_cast <std::chrono::microseconds> (loop_end - loop_start).count()) << " microseconds to run key gen " << samples << " times." << endl;
+
    count = 0;
-   total_time = 0;
-   avg_time = 0;
    outputFile1.close();
    outputFile2.open(fileName_2);
 
@@ -75,64 +66,49 @@ int main() {
    //let the system stablize
    sleep(10);	
 
-   time(&start_time);
-
    cout << "/////// Beginning signing function: " << endl;
-   cout << "/////// Start time (sec): " << start_time << endl;
 
    //create the hash and sign
-   while((end_time - start_time) < LOOP_TIME){
+   loop_start = std::chrono::steady_clock::now();
+   while(count < samples){
       count++;
       func_start = std::chrono::steady_clock::now();
       system("openssl dgst -sha3-256 -sign myprivate.pem -out sha3-256.sign myfile.txt");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
       outputFile2 << elapsed_time << endl;
-      total_time = total_time + elapsed_time;
-      time(&end_time);
    }
-   
-   avg_time = total_time / count;
-   cout << "/////// End time (sec): " << end_time << endl;
-   cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
-   cout << "/////// Number of times function was run: " << count << endl << "///////" << endl;;
+   loop_end = std::chrono::steady_clock::now();
+
+   cout << "/////// RSA took " << double (std::chrono::duration_cast <std::chrono::microseconds> (loop_end - loop_start).count()) << " microseconds to run sign " << samples << " times." << endl;
 
    count = 0;
-   total_time = 0;
-   avg_time = 0;
    outputFile2.close();
    outputFile3.open(fileName_3);
    
    //let the system stablize
    sleep(10);	
    
-   time(&start_time);
 
    cout << "/////// Beginning verify function: " << endl;
-   cout << "/////// Start time (sec): " << start_time << endl;
 
-   while((end_time - start_time) < LOOP_TIME){
+   loop_start = std::chrono::steady_clock::now();
+   while(count < samples){
       count++;
       func_start = std::chrono::steady_clock::now();
       system("openssl dgst -sha3-256 -verify mypublic.pem -signature sha3-256.sign myfile.txt > /dev/null 2>&1");
       func_end = std::chrono::steady_clock::now();
       double elapsed_time = double(std::chrono::duration_cast <std::chrono::microseconds> (func_end - func_start).count());
       outputFile3 << elapsed_time << endl;
-      total_time = total_time + elapsed_time;
-      time(&end_time);
    }
-   
-   avg_time = total_time / count;
-   
-   cout << "/////// End time (sec): " << end_time << endl;
-   cout << "/////// Average length of time for 1 run of sign: " << avg_time << " microseconds" << endl;
-   cout << "/////// Number of times function was run: " << count << endl << endl;
+   loop_end = std::chrono::steady_clock::now();
+
+      
+   cout << "/////// RSA took " << double (std::chrono::duration_cast <std::chrono::microseconds> (loop_end - loop_start).count()) << " microseconds to run verify " << samples << " times." << endl;
 
    //END VERIFY
 
    count = 0;
-   total_time = 0;
-   avg_time = 0;
    outputFile3.close();
 
    return 0;
