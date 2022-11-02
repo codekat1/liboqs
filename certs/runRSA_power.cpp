@@ -63,7 +63,7 @@ int main() {
    sleep(10);	
    
    time(&start_time);
-   cout << "/////// Beginning verify function: " << endl;
+   cout << "/////// Verify start time: " << start_time << endl;
 
    while((end_time - start_time) < LOOP_TIME){
       system("openssl dgst -sha3-256 -verify mypublic.pem -signature sha3-256.sign myfile.txt > /dev/null 2>&1");
