@@ -2,6 +2,12 @@ import os
 import sys
 import time
 
+# If it doesn't find the library, type this into the terminal:
+"""
+LD_LIBRARY_PATH=/usr/local/lib
+export LD_LIBRARY_PATH
+"""
+
 def terminal(cmd):
 	os.system(cmd)
 
