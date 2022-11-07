@@ -11,6 +11,6 @@ cd build
 
 #cmake -DBUILD_SHARED_LIBS=ON -GNinja ..
 #cmake -DLIBOQS_INCLUDE_DIR=/usr/local/include -DLIBOQS_LIB_DIR=/usr/local/lib -DBUILD_SHARED_LIBS=ON -GNinja ..
-cmake -DBUILD_SHARED_LIBS=ON -GNinja ..
+cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Debug -GNinja ..
 #ninja
 sudo ninja install

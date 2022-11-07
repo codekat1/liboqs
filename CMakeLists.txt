@@ -96,13 +96,11 @@ if(OQS_PORTABLE_BUILD)
     message(FATAL_ERROR "OQS_PORTABLE_BUILD is deprecated")
 endif()
 
-# Cybersecurity Lab: Force debugging information
-set(OQS_DEBUG_BUILD ON)
-# if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-#     set(OQS_DEBUG_BUILD ON)
-# else()
-#     set(OQS_DEBUG_BUILD OFF)
-# endif()
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+     set(OQS_DEBUG_BUILD ON)
+else()
+     set(OQS_DEBUG_BUILD OFF)
+endif()
 
 option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 

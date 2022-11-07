@@ -16,8 +16,8 @@ file.close()
 algorithms = ['Dilithium2', 'Dilithium3',  'Dilithium5', 'Falcon-512', 'Falcon-1024', 'SPHINCS+-SHA256-128s-robust', 'SPHINCS+-SHA256-192s-robust', 'SPHINCS+-SHA256-256s-robust']
 algorithms_pretty = ['Dilithium 2', 'Dilithium 3',  'Dilithium 5', 'Falcon 512', 'Falcon 1024', 'SPHINCS+ SHA256-128s-robust', 'SPHINCS+ SHA256-192s-robust', 'SPHINCS+ SHA256-256s-robust']
 operations = ['Key generation', 'Signing', 'Verifying']
-#operations_files = ['gdb_keygen.cpp', 'gdb_sign.cpp', 'gdb_verify.cpp']
-operations_files = ['gdb_temp.cpp', 'gdb_temp.cpp', 'gdb_temp.cpp']
+operations_files = ['gdb_keygen.cpp', 'gdb_sign.cpp', 'gdb_verify.cpp']
+#operations_files = ['gdb_temp.cpp', 'gdb_temp.cpp', 'gdb_temp.cpp']
 
 for i, algorithm in enumerate(algorithms):
 	for j, operation in enumerate(operations):
