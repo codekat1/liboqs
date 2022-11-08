@@ -4,12 +4,6 @@ import re
 import json
 import sys
 
-# def listToCSV(data):
-# 	line = ''
-# 	for item in data:
-# 		line += '"' + str(item).replace('"', '""') + '",'
-# 	return line + '\n'
-
 if __name__ == '__main__':
 	# Construct the assembly --> category mapping
 	categoryMap = {}
@@ -94,7 +88,7 @@ if __name__ == '__main__':
 		line += str(categorizedOutputs['Control Flow Instructions']) + ','
 		line += str(categorizedOutputs['Arithmetic and Logic Instructions']) + ','
 		line += str(categorizedOutputs['Data Movement Instructions']) + ','
-		line += str(opcodes) + ','
+		line += '"' + str(opcodes) + '",'
 		outputFile.write(line + '\n')
 
 
