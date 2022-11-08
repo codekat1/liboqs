@@ -91,47 +91,6 @@ if __name__ == '__main__':
 		line += '"' + str(opcodes) + '",'
 		outputFile.write(line + '\n')
 
-
 	readerFile.close()
 	outputFile.close()
-
 	print('Done!')
-
-
-
-
-	# # Begin looping through the files
-	# for file in files:
-	# 	print(f'Processing {file}')
-	# 	readerFile = open(file, 'r')
-	# 	# Remove NUL bytes to prevent errors
-	# 	reader = csv.reader(x.replace('\0', '') for x in readerFile)
-
-	# 	i = 0
-	# 	for row in reader:
-	# 		j = 0
-	# 		for cell in row:
-	# 			if re.match(r'^-?[0-9]+(\.[0-9]*)?$', cell.strip()) is not None:
-	# 				num = float(cell)
-	# 				data_sum[i][j] += num
-	# 				data_counter[i][j] += 1
-	# 			elif data_sum[i][j] == 0:
-	# 				data_sum[i][j] = cell
-	# 			j += 1
-	# 		i += 1
-
-	# 	readerFile.close()
-
-	# # Convert the sum into averages
-	# for i in range(len(data_sum)):
-	# 	for j in range(len(data_sum[i])):
-	# 		if (type(data_sum[i][j]) is int or type(data_sum[i][j]) is float) and data_counter[i][j] != 0:
-	# 			data_sum[i][j] /= data_counter[i][j]
-
-	# # Convert the array into CSV format
-	# for row in data_sum:
-	# 	line = listToCSV(row)
-	# 	outputFile.write(line)
-
-	# outputFile.close()
-	# print('Done.')
