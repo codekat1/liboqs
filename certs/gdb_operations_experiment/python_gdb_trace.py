@@ -1,11 +1,10 @@
 import os
 import sys
-import time
 
 # These variables are set within gdb using -ex 'py fileName="FILE NAME"' and -ex 'py logTerminatesAtLine=30'
 assert len(fileName) > 0
 assert logTerminatesAtLine > 0
-print(f'File "{fileName} terminates at line {logTerminatesAtLine}. Algorithm = {algorithm}, Operation = {operation}')
+#print(f'File "{fileName} terminates at line {logTerminatesAtLine}. Algorithm = {algorithm}, Operation = {operation}')
 
 class TraceAsm(gdb.Command):
 	def __init__(self):
@@ -21,14 +20,8 @@ class TraceAsm(gdb.Command):
 			gdb.write('Does not take any arguments.\n')
 		else:
 			occurances = {}
-			count = 0
-			#done = False
-			thread = gdb.inferiors()[0].threads()[0]
-
-			#file = open('experiment_output.csv', 'a')
-			
+			thread = gdb.inferiors()[0].threads()[0]			
 			while thread.is_valid():
-				#time.sleep(1)
 				try:
 					frame = gdb.selected_frame()
 					sal = frame.find_sal()
@@ -47,17 +40,13 @@ class TraceAsm(gdb.Command):
 					#	file.write(str(line) + ' - ' + os.path.basename(path) + '\n')
 					#	file.write("{} {} {}".format(hex(pc), frame.architecture().disassemble(pc)[0]['asm'], os.linesep))
 					
-					if op not in occurances:
-						occurances[op] = 1
-					else:
-						occurances[op] += 1
+					if op not in occurances: occurances[op] = 1
+					else: occurances[op] += 1
 
 					if path is not None and os.path.basename(path) == fileName and line == logTerminatesAtLine:
 						break
+					gdb.execute('stepi', to_string=True)
 
-					gdb.execute('si', to_string=True)
-					#gdb.execute('si', from_tty=True, to_string=False)
-					count += 1
 				except Exception as e:
 					exc_type, exc_obj, exc_tb = sys.exc_info()
 					fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -67,12 +56,12 @@ class TraceAsm(gdb.Command):
 			occurances = dict(sorted(occurances.items(), key=lambda item: item[1], reverse=True))
 
 			file = open('experiment_output.csv', 'a')
-			line = ''
-			line += str(algorithm) + ','
+			line = str(algorithm) + ','
 			line += str(operation) + ','
 			line += '"' + str(occurances) + '",'
 			file.write(line + '\n')
 			file.close()
-			
-			print('Success!')
+		
+		# Done
+
 TraceAsm()
