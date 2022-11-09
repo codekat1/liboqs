@@ -4,10 +4,10 @@ rm -rf gdb_sign.o
 rm -rf gdb_verify.o
 
 # -g for debugging
-g++ -g -o gdb_baseline.o gdb_baseline.cpp -L../build/lib -loqs
-g++ -g -o gdb_keygen.o gdb_keygen.cpp -L../build/lib -loqs
-g++ -g -o gdb_sign.o gdb_sign.cpp -L../build/lib -loqs
-g++ -g -o gdb_verify.o gdb_verify.cpp -L../build/lib -loqs
+g++ -g -o gdb_baseline.o gdb_baseline.cpp -L../../build/lib -loqs
+g++ -g -o gdb_keygen.o gdb_keygen.cpp -L../../build/lib -loqs
+g++ -g -o gdb_sign.o gdb_sign.cpp -L../../build/lib -loqs
+g++ -g -o gdb_verify.o gdb_verify.cpp -L../../build/lib -loqs
 
 LD_LIBRARY_PATH=/usr/local/lib
 export LD_LIBRARY_PATH
