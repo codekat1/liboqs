@@ -19,8 +19,10 @@ header = 'Algorithm,Experiment,Opcode Histogram,'
 file.write(header + '\n')
 file.close()
 
-algorithms = ['Dilithium2', 'Dilithium3',  'Dilithium5', 'Falcon-512', 'Falcon-1024', 'SPHINCS+-SHA256-128s-robust', 'SPHINCS+-SHA256-192s-robust', 'SPHINCS+-SHA256-256s-robust']
-algorithms_pretty = ['Dilithium 2', 'Dilithium 3',  'Dilithium 5', 'Falcon 512', 'Falcon 1024', 'SPHINCS+ SHA256-128s-robust', 'SPHINCS+ SHA256-192s-robust', 'SPHINCS+ SHA256-256s-robust']
+# algorithms = ['Dilithium2', 'Dilithium3',  'Dilithium5', 'Falcon-512', 'Falcon-1024', 'SPHINCS+-SHA256-128s-robust', 'SPHINCS+-SHA256-192s-robust', 'SPHINCS+-SHA256-256s-robust']
+# algorithms_pretty = ['Dilithium 2', 'Dilithium 3',  'Dilithium 5', 'Falcon 512', 'Falcon 1024', 'SPHINCS+ SHA256-128s-robust', 'SPHINCS+ SHA256-192s-robust', 'SPHINCS+ SHA256-256s-robust']
+algorithms = ['Falcon-512', 'Falcon-1024', 'SPHINCS+-SHA256-128s-robust', 'SPHINCS+-SHA256-192s-robust', 'SPHINCS+-SHA256-256s-robust']
+algorithms_pretty = ['Falcon 512', 'Falcon 1024', 'SPHINCS+ SHA256-128s-robust', 'SPHINCS+ SHA256-192s-robust', 'SPHINCS+ SHA256-256s-robust']
 operations = ['Key Generation', 'Signing', 'Verifying']
 operations_files = ['gdb_keygen.cpp', 'gdb_sign.cpp', 'gdb_verify.cpp']
 #operations_files = ['gdb_baseline.cpp', 'gdb_baseline.cpp', 'gdb_baseline.cpp']
