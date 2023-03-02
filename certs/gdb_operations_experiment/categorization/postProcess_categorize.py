@@ -53,6 +53,7 @@ if __name__ == '__main__':
 	baselineRow = next(reader)
 	assert baselineRow[1] == 'N/A', 'The initial baseline row was not found'
 	baselineJSON = json.loads(baselineRow[6].replace("'", '"'))
+	print(baselineJSON)
 	for row in reader:
 		algorithm = row[0]
 		experiment = row[1]
@@ -84,17 +85,17 @@ if __name__ == '__main__':
 
 				# Data dataset was not complete... so any remaining opcodes can be placed here to make the dataset complete
 				if category is None:
-					if op in ['cmova', 'cmove', 'cmovne', 'movabs', 'movsbl', 'movslq', 'movswl', 'movw', 'movzbl', 'movzwl']: category = 'DATAXFER'
-					elif op in ['andl', 'andq', 'cmpl', 'cmpq', 'cmpw', 'orl', 'testb', 'testl']: category = 'LOGICAL'
+					if op in ['cmova', 'cmove', 'cmovae', 'cmovne', 'movabs', 'movsbl', 'movslq', 'movswl', 'movw', 'movzbl', 'movsbq', 'movzwl', 'vcvtsi2sdq']: category = 'DATAXFER'
+					elif op in ['andl', 'andq', 'cmpb', 'cmpl', 'cmpq', 'cmpw', 'decl', 'decq', 'negl', 'orl', 'testb', 'testl']: category = 'LOGICAL'
 					elif op in ['ja', 'jae', 'je', 'jg', 'jmpq', 'jne']: category = 'COND_BR'
-					elif op in ['addl', 'addq', 'incl', 'orq', 'subl']: category = 'BINARY'
+					elif op in ['addl', 'addq', 'incl', 'incq', 'orq', 'subl', 'subw']: category = 'BINARY'
 					elif op in ['data16', 'nopl', 'nopw']: category = 'NOP'
 					elif op in ['leaveq', 'notrack']: category = 'MISC'
-					elif op in ['sete', 'setne']: category = 'SETCC'
-					elif op in ['cltq']: category = 'CONVERT'
+					elif op in ['seta', 'sete', 'setne']: category = 'SETCC'
+					elif op in ['cwtl', 'cltq']: category = 'CONVERT'
 					elif op in ['callq']: category = 'CALL'
 					elif op in ['pushq']: category = 'PUSH'
-					elif op in ['shrl']: category = 'SHIFT'
+					elif op in ['shrl', 'shrq', 'shll', 'shlq']: category = 'SHIFT'
 					elif op in ['retq']: category = 'RET'
 					else:
 						print(f'No category for " {op} " ({opcodes[op]})!')
@@ -103,7 +104,7 @@ if __name__ == '__main__':
 			# Optionally, we categorize the categories into four groups
 			if category in ['BITBYTE', 'BROADCAST', 'CMOV', 'CONVERT', 'DATAXFER', 'POP', 'PUSH', 'SETCC', 'XSAVE']:
 				category = 'Data Movement Instructions'
-			elif category in ['AVX', 'AVX2', 'AVX512', 'BINARY', 'BMI1', 'LOGICAL', 'MPX', 'ROTATE', 'SHIFT', 'SSE']:
+			elif category in ['AVX', 'AVX2', 'AVX512', 'BINARY', 'BMI1', 'LOGICAL', 'LOGICAL_FP', 'MPX', 'ROTATE', 'SHIFT', 'SSE']:
 				category = 'Arithmetic and Logic Instructions'
 			elif category in ['CALL', 'CET', 'COND_BR', 'NOP', 'RET', 'SEMAPHORE', 'UNCOND_BR', 'WIDENOP']:
 				category = 'Control Flow Instructions'
@@ -132,7 +133,17 @@ if __name__ == '__main__':
 			elif op.upper() in nopInstructions:
 				categorizedIndividualInstructions['nop'] += opcodes[op]
 
+		if 'Data Movement Instructions' not in categorizedOutputs:
+			categorizedOutputs['Data Movement Instructions'] = 0
+		if 'Arithmetic and Logic Instructions' not in categorizedOutputs:
+			categorizedOutputs['Arithmetic and Logic Instructions'] = 0
+		if 'Control Flow Instructions' not in categorizedOutputs:
+			categorizedOutputs['Control Flow Instructions'] = 0
+		if 'Miscellaneous Instructions' not in categorizedOutputs:
+			categorizedOutputs['Miscellaneous Instructions'] = 0
+
 		categorizedOutputs = dict(sorted(categorizedOutputs.items(), key=lambda item: item[1], reverse=True))
+		print(categorizedOutputs)
 		line = ''
 		line += algorithm + ','
 		line += experiment + ','

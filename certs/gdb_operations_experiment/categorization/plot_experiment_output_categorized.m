@@ -1,5 +1,8 @@
-data_str = readtable('experiment_output_categorized.csv');
-data = readmatrix('experiment_output_categorized.csv');
+format long
+
+table_range = 'A1:M16'
+data_str = readtable('experiment_output_categorized.csv','range',table_range);
+data = readmatrix('experiment_output_categorized.csv','range',table_range);
 
 font_size = 16
 legend_pos = 'NorthWest'
@@ -7,17 +10,21 @@ legend_pos = 'NorthWest'
 % 1 = Key Generation
 % 2 = Signing
 % 3 = Verifying
-plotNum = 1
+plotNum = 3
+
 
 if plotNum == 1
-    T = data(1:8, 4:6) % Columns 4 through 6
+    % Keygen: Rows, Columns
+    T = data(2:6, 4:6) % Columns 4 through 6
 elseif plotNum == 2
-    T = data(9:16, 4:6) % Columns 4 through 6
+    % Signing: Rows, Columns
+    T = data(7:11, 4:6) % Columns 4 through 6
 elseif plotNum == 3
-    T = data(17:24, 4:6) % Columns 4 through 6
+    % Verifying: Rows, Columns
+    T = data(12:16, 4:6) % Columns 4 through 6
 end
 
-figure('Position', [100 100 1000 600])
+figure('Position', [100 100 1000 620])
 b = bar(T, 'stacked', 'FaceColor', 'flat')
 b(1).CData = hex2rgb('#F2668B');
 b(2).CData = hex2rgb('#3CA6A6');
@@ -26,14 +33,17 @@ axis square
 ylabel('Assembly Instruction Count')
 
 if plotNum == 1
-    ylim([0, sum(max(T)) + 1.8e6])
-    text_step_size = 2e5
-elseif plotNum == 2
-    ylim([0, sum(max(T)) + 2.9e6])
-    text_step_size = 3e5
-elseif plotNum == 3
-    ylim([0, sum(max(T)) + 1.6e6])
+    ylim([0, sum(max(T)) + 1.7e6])
     text_step_size = 1.8e5
+    xlabel('Key Generation')
+elseif plotNum == 2
+    ylim([0, sum(max(T)) + 2.8e6])
+    text_step_size = 7e5
+    xlabel('Message Sign')
+elseif plotNum == 3
+    ylim([0, sum(max(T)) + 1.5e6])
+    text_step_size = 1.8e5
+    xlabel('Message Verify')
 end
 
 text_font_size = 11
